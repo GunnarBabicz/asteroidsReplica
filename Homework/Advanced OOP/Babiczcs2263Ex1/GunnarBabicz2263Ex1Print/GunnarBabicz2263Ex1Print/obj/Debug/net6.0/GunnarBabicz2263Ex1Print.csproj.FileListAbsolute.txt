@@ -1,0 +1,15 @@
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\bin\Debug\net6.0\GunnarBabicz2263Ex1Print.exe
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\bin\Debug\net6.0\GunnarBabicz2263Ex1Print.deps.json
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\bin\Debug\net6.0\GunnarBabicz2263Ex1Print.runtimeconfig.json
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\bin\Debug\net6.0\GunnarBabicz2263Ex1Print.dll
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\bin\Debug\net6.0\GunnarBabicz2263Ex1Print.pdb
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\obj\Debug\net6.0\GunnarBabicz2263Ex1Print.csproj.AssemblyReference.cache
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\obj\Debug\net6.0\GunnarBabicz2263Ex1Print.GeneratedMSBuildEditorConfig.editorconfig
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\obj\Debug\net6.0\GunnarBabicz2263Ex1Print.AssemblyInfoInputs.cache
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\obj\Debug\net6.0\GunnarBabicz2263Ex1Print.AssemblyInfo.cs
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\obj\Debug\net6.0\GunnarBabicz2263Ex1Print.csproj.CoreCompileInputs.cache
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\obj\Debug\net6.0\GunnarBabicz2263Ex1Print.dll
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\obj\Debug\net6.0\refint\GunnarBabicz2263Ex1Print.dll
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\obj\Debug\net6.0\GunnarBabicz2263Ex1Print.pdb
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\obj\Debug\net6.0\GunnarBabicz2263Ex1Print.genruntimeconfig.cache
+M:\CS Learning\Spring2023\Homework\Advanced OOP\Babiczcs2263Ex1\GunnarBabicz2263Ex1Print\GunnarBabicz2263Ex1Print\obj\Debug\net6.0\ref\GunnarBabicz2263Ex1Print.dll
