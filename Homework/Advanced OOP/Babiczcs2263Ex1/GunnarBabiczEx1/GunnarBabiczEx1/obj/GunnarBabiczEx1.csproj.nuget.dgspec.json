@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "M:\\CS Learning\\Spring2023\\Homework\\Advanced OOP\\Babiczcs2263Ex1\\GunnarBabiczEx1\\GunnarBabiczEx1\\GunnarBabiczEx1.csproj": {}
+    "C:\\Users\\Gunnar Babicz\\Desktop\\Spring2023\\Homework\\Advanced OOP\\Babiczcs2263Ex1\\GunnarBabiczEx1\\GunnarBabiczEx1\\GunnarBabiczEx1.csproj": {}
   },
   "projects": {
-    "M:\\CS Learning\\Spring2023\\Homework\\Advanced OOP\\Babiczcs2263Ex1\\GunnarBabiczEx1\\GunnarBabiczEx1\\GunnarBabiczEx1.csproj": {
+    "C:\\Users\\Gunnar Babicz\\Desktop\\Spring2023\\Homework\\Advanced OOP\\Babiczcs2263Ex1\\GunnarBabiczEx1\\GunnarBabiczEx1\\GunnarBabiczEx1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "M:\\CS Learning\\Spring2023\\Homework\\Advanced OOP\\Babiczcs2263Ex1\\GunnarBabiczEx1\\GunnarBabiczEx1\\GunnarBabiczEx1.csproj",
+        "projectUniqueName": "C:\\Users\\Gunnar Babicz\\Desktop\\Spring2023\\Homework\\Advanced OOP\\Babiczcs2263Ex1\\GunnarBabiczEx1\\GunnarBabiczEx1\\GunnarBabiczEx1.csproj",
         "projectName": "GunnarBabiczEx1",
-        "projectPath": "M:\\CS Learning\\Spring2023\\Homework\\Advanced OOP\\Babiczcs2263Ex1\\GunnarBabiczEx1\\GunnarBabiczEx1\\GunnarBabiczEx1.csproj",
+        "projectPath": "C:\\Users\\Gunnar Babicz\\Desktop\\Spring2023\\Homework\\Advanced OOP\\Babiczcs2263Ex1\\GunnarBabiczEx1\\GunnarBabiczEx1\\GunnarBabiczEx1.csproj",
         "packagesPath": "C:\\Users\\Gunnar Babicz\\.nuget\\packages\\",
-        "outputPath": "M:\\CS Learning\\Spring2023\\Homework\\Advanced OOP\\Babiczcs2263Ex1\\GunnarBabiczEx1\\GunnarBabiczEx1\\obj\\",
+        "outputPath": "C:\\Users\\Gunnar Babicz\\Desktop\\Spring2023\\Homework\\Advanced OOP\\Babiczcs2263Ex1\\GunnarBabiczEx1\\GunnarBabiczEx1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Gunnar Babicz\\AppData\\Roaming\\NuGet\\NuGet.Config",
