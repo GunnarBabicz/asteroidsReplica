@@ -19,10 +19,6 @@ namespace GunnarBabiczEx2
 
 
 
-        
-
-
-
 
         // --------------------------------- Question Number 1 --------------------------------
 
@@ -35,8 +31,8 @@ namespace GunnarBabiczEx2
             { // if the input is valid (either positive integer or text == "0")
                 int yearEntered = int.Parse(txtLeapYearIn.Text);
 
-                if ((yearEntered % 4 == 0) && (yearEntered % 100) != 0 || (yearEntered % 100 == 0) && (yearEntered % 400 == 0))
-                { // if the year entered is a leap year
+                if ((yearEntered % 4 == 0) && (yearEntered % 100) != 0 || (yearEntered % 400 == 0))
+                { // if the year entered is a leap year (year is divisible by 4 and NOT by 100, or year is divisible by 400)
                     lblNewYear.Text = ($"{yearEntered} is a leap year");
                 }
 
@@ -52,8 +48,10 @@ namespace GunnarBabiczEx2
         }
 
 
-        // --------------------------------- Question Number 4 --------------------------------
 
+
+
+        // --------------------------------- Question Number 4 --------------------------------
 
         private void btnFibonacci_Click(object sender, EventArgs e)
         {
@@ -178,6 +176,7 @@ namespace GunnarBabiczEx2
 
 
         // --------------------------------- Question Number 8 --------------------------------
+
         private void btnLettersofAlphabet_Click(object sender, EventArgs e)
         {
             if (isPositiveInt(txtLettersOfAlphabetIn.Text))
