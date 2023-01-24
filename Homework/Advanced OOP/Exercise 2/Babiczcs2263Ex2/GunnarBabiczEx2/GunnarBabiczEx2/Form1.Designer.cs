@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Exercise2));
             this.btnLeapYear = new System.Windows.Forms.Button();
             this.lblNewYear = new System.Windows.Forms.Label();
             this.txtLeapYearIn = new System.Windows.Forms.TextBox();
@@ -209,6 +210,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(1057, 539);
             this.Controls.Add(this.btnSquareCode);
             this.Controls.Add(this.lblLettersOfAlphabetError);
@@ -228,8 +230,11 @@
             this.Controls.Add(this.txtLeapYearIn);
             this.Controls.Add(this.lblNewYear);
             this.Controls.Add(this.btnLeapYear);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Exercise2";
-            this.Text = "Form1";
+            this.Text = "Exercise 2";
             this.ResumeLayout(false);
             this.PerformLayout();
 
