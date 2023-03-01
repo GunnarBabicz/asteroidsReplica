@@ -58,11 +58,11 @@
             // lblOutput
             // 
             this.lblOutput.AutoSize = true;
-            this.lblOutput.Location = new System.Drawing.Point(240, 81);
+            this.lblOutput.Location = new System.Drawing.Point(219, 81);
             this.lblOutput.Name = "lblOutput";
-            this.lblOutput.Size = new System.Drawing.Size(68, 15);
+            this.lblOutput.Size = new System.Drawing.Size(110, 15);
             this.lblOutput.TabIndex = 1;
-            this.lblOutput.Text = "Current List";
+            this.lblOutput.Text = "All strings in the list";
             // 
             // txtInput
             // 
@@ -79,7 +79,7 @@
             this.btnInsertFirst.TabIndex = 3;
             this.btnInsertFirst.Text = "Insert First Node";
             this.btnInsertFirst.UseVisualStyleBackColor = true;
-            this.btnInsertFirst.Click += new System.EventHandler(this.btnInsertFirst_Click);
+            this.btnInsertFirst.Click += new System.EventHandler(this.anyInsertButton_Click);
             // 
             // btnInsertTail
             // 
@@ -89,7 +89,7 @@
             this.btnInsertTail.TabIndex = 4;
             this.btnInsertTail.Text = "Insert at Tail";
             this.btnInsertTail.UseVisualStyleBackColor = true;
-            this.btnInsertTail.Click += new System.EventHandler(this.btnInsertTail_Click);
+            this.btnInsertTail.Click += new System.EventHandler(this.anyInsertButton_Click);
             // 
             // btnInsertHead
             // 
@@ -99,7 +99,7 @@
             this.btnInsertHead.TabIndex = 5;
             this.btnInsertHead.Text = "Insert at Head";
             this.btnInsertHead.UseVisualStyleBackColor = true;
-            this.btnInsertHead.Click += new System.EventHandler(this.btnInsertHead_Click);
+            this.btnInsertHead.Click += new System.EventHandler(this.anyInsertButton_Click);
             // 
             // btnInsertAfterCurrent
             // 
@@ -109,7 +109,7 @@
             this.btnInsertAfterCurrent.TabIndex = 6;
             this.btnInsertAfterCurrent.Text = "Insert After Current";
             this.btnInsertAfterCurrent.UseVisualStyleBackColor = true;
-            this.btnInsertAfterCurrent.Click += new System.EventHandler(this.btnInsertAfterCurrent_Click);
+            this.btnInsertAfterCurrent.Click += new System.EventHandler(this.anyInsertButton_Click);
             // 
             // btnDeleteHead
             // 
@@ -119,7 +119,7 @@
             this.btnDeleteHead.TabIndex = 7;
             this.btnDeleteHead.Text = "Delete Head";
             this.btnDeleteHead.UseVisualStyleBackColor = true;
-            this.btnDeleteHead.Click += new System.EventHandler(this.btnDeleteHead_Click);
+            this.btnDeleteHead.Click += new System.EventHandler(this.anyDeleteButton_Click);
             // 
             // btnDeleteTail
             // 
@@ -129,7 +129,7 @@
             this.btnDeleteTail.TabIndex = 8;
             this.btnDeleteTail.Text = "Delete Tail";
             this.btnDeleteTail.UseVisualStyleBackColor = true;
-            this.btnDeleteTail.Click += new System.EventHandler(this.btnDeleteTail_Click);
+            this.btnDeleteTail.Click += new System.EventHandler(this.anyDeleteButton_Click);
             // 
             // btnDeleteCurrent
             // 
@@ -139,7 +139,7 @@
             this.btnDeleteCurrent.TabIndex = 9;
             this.btnDeleteCurrent.Text = "Delete Current";
             this.btnDeleteCurrent.UseVisualStyleBackColor = true;
-            this.btnDeleteCurrent.Click += new System.EventHandler(this.btnDeleteCurrent_Click);
+            this.btnDeleteCurrent.Click += new System.EventHandler(this.anyDeleteButton_Click);
             // 
             // lblInput
             // 

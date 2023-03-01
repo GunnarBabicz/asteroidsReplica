@@ -164,70 +164,66 @@ namespace GunnarBabicz2263Pj5
 
         /*******************************
         * Gunnar Babicz 02/27/2023
-        *
+        * deletes a node when the previous node is null
+        * null (node is the head of the list)
         * *****************************/
         public void deleteHead()
         {
             if (size > 1) 
-            {
+            { // if the head is not the only node
                 head = head.nextNode;
                 head.previousNode = null;
                 size -= 1;
             }
-            else { Popup.Error("Unable to delete. List too small");  }
+            else { deleteOnly();  }
         }
 
 
         /*******************************
         * Gunnar Babicz 02/27/2023
-        * deletes the tail of the list
+        * deletes a node when the next node is null 
+        * is null (node is the tail of the list)
+        * 
         * *****************************/
         public void deleteTail()
         {
             if (size > 1)
-            {
+            { // if the tail is not the only node
                 tail = tail.previousNode;
                 tail.nextNode = null;
                 size -= 1;
             }
-            else { Popup.Error("Unable to delete. List too small"); }
+            else { deleteOnly(); }
         }
 
-
         /*******************************
-        * Gunnar Babicz 02/27/2023
-        * Deletes the current node
+        * Gunnar Babicz 02/28/2023
+        * deletes a node when both the previous and
+        * next nodes are null (only one node in the list)
         * *****************************/
+        public void deleteOnly() 
+        {
+            currentNode = null;
+            size -= 1;
+        }
 
-
-        // work on the delete current, blowing up 
         public void deleteCurrent()
         {
-            if (size > 0)
+            // if the list has on
+            if (size == 1) { deleteOnly(); }
+            if (size > 1) 
             {
-                if (currentNode.nextNode != null)
-                { // if there is a next node
-                    DoubleLinkedListNode tempNode = currentNode.nextNode;
-                    currentNode = currentNode.previousNode;
-                    currentNode.nextNode = tempNode;
-                }
-
-                else if (currentNode.previousNode != null)
-                { // if there is a previous node
-                    DoubleLinkedListNode tempNode = currentNode.previousNode;
-                    currentNode = currentNode.nextNode;
-                    currentNode.previousNode = tempNode;
-                }
-
+                if (currentNode.nextNode is null) { currentToPrevious();  deleteTail(); }
+                else if (currentNode.previousNode is null) { currentToNext(); deleteHead(); }
                 else 
-                { // if current node is the only node
-                    currentNode = null;
-                    head = null;
-                    tail = null;
+                {
+                    DoubleLinkedListNode tempNode = currentNode.nextNode;
+                    currentToPrevious();
+                    currentNode.nextNode = tempNode;
+                    size -= 1;
                 }
-                size -= 1;
             }
-            else { Popup.Error("Nothing to delete."); }
+            
         }
 
 
@@ -268,6 +264,7 @@ namespace GunnarBabicz2263Pj5
                 }
                 pointer = head; displayString = "";
             }
+
             // if the current node has a value
             if (pointer.value != null) { displayString += pointer.value + " "; }
             // if the current node is not the tail
@@ -292,7 +289,8 @@ namespace GunnarBabicz2263Pj5
         }
         private DoubleLinkedListNode()
         {
-            value = null;
+             value = null;
         }
+
     }
 }
