@@ -1,18 +1,24 @@
 namespace GunnarBabicz2263Pj5
 {
+
+    /*******************************
+    * Gunnar Babicz 02/27/2023
+    * Creates an interactive window to test the functions of the 
+    * doubly linked list. 
+    * *****************************/
     public partial class Form1 : Form
     {
 
         private void updateText() 
         {
-            txtOutput.Text = theList.getDisplayString();
+            txtOutput.Text = theList.getDisplayString(theList.head);
             txtNumberOfNodes.Text = theList.numberOfNodesInList();
-            txtCurrentNode.Text = theList.currentNode.value;
+            txtCurrentNode.Text = theList.CurrentNodeString();
         }
 
 
         // initializes a new empty doubly linked list
-        DoubleLinkedList theList = new DoubleLinkedList();
+        DoubleLinkedList<string> theList = new DoubleLinkedList<string>();
         public Form1()
         {
             InitializeComponent();
@@ -22,13 +28,13 @@ namespace GunnarBabicz2263Pj5
         private void btnNextNode_Click(object sender, EventArgs e)
         {
             theList.currentToNext();
-            txtCurrentNode.Text = theList.getCurrentValue();
+            txtCurrentNode.Text = theList.currentNode.valueAsString();
         }
 
         private void btnPreviousNode_Click(object sender, EventArgs e)
         {
             theList.currentToPrevious();
-            txtCurrentNode.Text = theList.getCurrentValue();
+            txtCurrentNode.Text = theList.currentNode.valueAsString();
         }
 
 
