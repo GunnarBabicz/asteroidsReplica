@@ -1,0 +1,15 @@
+C:\Users\gunna\Documents\test\OOPMidtermPractice\bin\Debug\net7.0\OOPMidtermPractice.exe
+C:\Users\gunna\Documents\test\OOPMidtermPractice\bin\Debug\net7.0\OOPMidtermPractice.deps.json
+C:\Users\gunna\Documents\test\OOPMidtermPractice\bin\Debug\net7.0\OOPMidtermPractice.runtimeconfig.json
+C:\Users\gunna\Documents\test\OOPMidtermPractice\bin\Debug\net7.0\OOPMidtermPractice.dll
+C:\Users\gunna\Documents\test\OOPMidtermPractice\bin\Debug\net7.0\OOPMidtermPractice.pdb
+C:\Users\gunna\Documents\test\OOPMidtermPractice\obj\Debug\net7.0\OOPMidtermPractice.csproj.AssemblyReference.cache
+C:\Users\gunna\Documents\test\OOPMidtermPractice\obj\Debug\net7.0\OOPMidtermPractice.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gunna\Documents\test\OOPMidtermPractice\obj\Debug\net7.0\OOPMidtermPractice.AssemblyInfoInputs.cache
+C:\Users\gunna\Documents\test\OOPMidtermPractice\obj\Debug\net7.0\OOPMidtermPractice.AssemblyInfo.cs
+C:\Users\gunna\Documents\test\OOPMidtermPractice\obj\Debug\net7.0\OOPMidtermPractice.csproj.CoreCompileInputs.cache
+C:\Users\gunna\Documents\test\OOPMidtermPractice\obj\Debug\net7.0\OOPMidtermPractice.dll
+C:\Users\gunna\Documents\test\OOPMidtermPractice\obj\Debug\net7.0\refint\OOPMidtermPractice.dll
+C:\Users\gunna\Documents\test\OOPMidtermPractice\obj\Debug\net7.0\OOPMidtermPractice.pdb
+C:\Users\gunna\Documents\test\OOPMidtermPractice\obj\Debug\net7.0\OOPMidtermPractice.genruntimeconfig.cache
+C:\Users\gunna\Documents\test\OOPMidtermPractice\obj\Debug\net7.0\ref\OOPMidtermPractice.dll
