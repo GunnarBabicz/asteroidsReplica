@@ -8,19 +8,19 @@
     "net7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\gunna\\.nuget\\packages\\": {}
+    "C:\\Users\\Gunnar Babicz\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gunna\\Documents\\test\\OOPMidtermPractice\\OOPMidtermPractice.csproj",
+      "projectUniqueName": "C:\\Users\\Gunnar Babicz\\Desktop\\Spring2023\\OOPMidtermPractice\\OOPMidtermPractice.csproj",
       "projectName": "OOPMidtermPractice",
-      "projectPath": "C:\\Users\\gunna\\Documents\\test\\OOPMidtermPractice\\OOPMidtermPractice.csproj",
-      "packagesPath": "C:\\Users\\gunna\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gunna\\Documents\\test\\OOPMidtermPractice\\obj\\",
+      "projectPath": "C:\\Users\\Gunnar Babicz\\Desktop\\Spring2023\\OOPMidtermPractice\\OOPMidtermPractice.csproj",
+      "packagesPath": "C:\\Users\\Gunnar Babicz\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Gunnar Babicz\\Desktop\\Spring2023\\OOPMidtermPractice\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\gunna\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Gunnar Babicz\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

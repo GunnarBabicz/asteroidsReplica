@@ -1,0 +1,15 @@
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\bin\Debug\net7.0\Project6VSCode.exe
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\bin\Debug\net7.0\Project6VSCode.deps.json
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\bin\Debug\net7.0\Project6VSCode.runtimeconfig.json
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\bin\Debug\net7.0\Project6VSCode.dll
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\bin\Debug\net7.0\Project6VSCode.pdb
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\obj\Debug\net7.0\Project6VSCode.csproj.AssemblyReference.cache
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\obj\Debug\net7.0\Project6VSCode.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\obj\Debug\net7.0\Project6VSCode.AssemblyInfoInputs.cache
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\obj\Debug\net7.0\Project6VSCode.AssemblyInfo.cs
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\obj\Debug\net7.0\Project6VSCode.csproj.CoreCompileInputs.cache
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\obj\Debug\net7.0\Project6VSCode.dll
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\obj\Debug\net7.0\refint\Project6VSCode.dll
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\obj\Debug\net7.0\Project6VSCode.pdb
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\obj\Debug\net7.0\Project6VSCode.genruntimeconfig.cache
+C:\Users\Gunnar Babicz\Desktop\Spring2023\Homework\Advanced OOP\Project6VSCode\obj\Debug\net7.0\ref\Project6VSCode.dll

@@ -4,20 +4,44 @@ namespace OOPMidterm
     {
         // output should be 
 
-        public string remove(string input)
+        public string remove(string input, string output = "")
         {
-            string notDupe = "";
-            if((input.Substring(1)).Contains(input[0]))
-            {
-            }
-            else{ notDupe = input[0].ToString(); }
-
+            if(input == ""){return "";}
+            string currentCharacter = input[0].ToString();
             if(input.Length > 1)
             {
-                return notDupe + remove(input.Substring(1));
+                if(output.Contains(currentCharacter) == false){output += currentCharacter;}
+                return remove(input.Substring(1), output); 
             }
-            else{return notDupe; }
 
+            else
+            {
+                if(output.Contains(currentCharacter) == false){output += currentCharacter;}
+                return output; 
+            }
+        }
+
+
+        public string recursion(string s, int i = 0, int j = 1)
+        {
+            if(j>=s.Length) 
+            {
+                if(i == s.Length) {return s;}
+                i += 1;
+                j = i + 1;
+                return recursion(s, i, j);
+            }
+
+            if(s[i] == s[j])
+            {
+                s = s.Remove(j,1); //remove
+            }
+            else{j += 1;}
+            return recursion(s, i, j); // then start again
         }
     }
 }
+
+
+
+// expected output: "abcefgs"

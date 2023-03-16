@@ -39,6 +39,7 @@ namespace OOPMidterm
                 }
             }
             a = tempArray;
+            tempArray.
         }
 
         public void flipSecondaryDiagonal()
