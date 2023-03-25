@@ -1,0 +1,9 @@
+C:\Users\beard\Desktop\Beard\dvbDocuments\COURSES\CS3308-S18\Module-4-Sorting\Module-4-Notes-v2\nonRecursiveQuickSort-v2\nonRecursiveQuickSort-v2\bin\Debug\nonRecursiveQuickSort-v2.exe.config
+C:\Users\beard\Desktop\Beard\dvbDocuments\COURSES\CS3308-S18\Module-4-Sorting\Module-4-Notes-v2\nonRecursiveQuickSort-v2\nonRecursiveQuickSort-v2\bin\Debug\nonRecursiveQuickSort-v2.exe
+C:\Users\beard\Desktop\Beard\dvbDocuments\COURSES\CS3308-S18\Module-4-Sorting\Module-4-Notes-v2\nonRecursiveQuickSort-v2\nonRecursiveQuickSort-v2\bin\Debug\nonRecursiveQuickSort-v2.pdb
+C:\Users\beard\Desktop\Beard\dvbDocuments\COURSES\CS3308-S18\Module-4-Sorting\Module-4-Notes-v2\nonRecursiveQuickSort-v2\nonRecursiveQuickSort-v2\obj\Debug\nonRecursiveQuickSort-v2.csprojResolveAssemblyReference.cache
+C:\Users\beard\Desktop\Beard\dvbDocuments\COURSES\CS3308-S18\Module-4-Sorting\Module-4-Notes-v2\nonRecursiveQuickSort-v2\nonRecursiveQuickSort-v2\obj\Debug\nonRecursiveQuickSort_v2.Form1.resources
+C:\Users\beard\Desktop\Beard\dvbDocuments\COURSES\CS3308-S18\Module-4-Sorting\Module-4-Notes-v2\nonRecursiveQuickSort-v2\nonRecursiveQuickSort-v2\obj\Debug\nonRecursiveQuickSort_v2.Properties.Resources.resources
+C:\Users\beard\Desktop\Beard\dvbDocuments\COURSES\CS3308-S18\Module-4-Sorting\Module-4-Notes-v2\nonRecursiveQuickSort-v2\nonRecursiveQuickSort-v2\obj\Debug\nonRecursiveQuickSort-v2.csproj.GenerateResource.Cache
+C:\Users\beard\Desktop\Beard\dvbDocuments\COURSES\CS3308-S18\Module-4-Sorting\Module-4-Notes-v2\nonRecursiveQuickSort-v2\nonRecursiveQuickSort-v2\obj\Debug\nonRecursiveQuickSort-v2.exe
+C:\Users\beard\Desktop\Beard\dvbDocuments\COURSES\CS3308-S18\Module-4-Sorting\Module-4-Notes-v2\nonRecursiveQuickSort-v2\nonRecursiveQuickSort-v2\obj\Debug\nonRecursiveQuickSort-v2.pdb
