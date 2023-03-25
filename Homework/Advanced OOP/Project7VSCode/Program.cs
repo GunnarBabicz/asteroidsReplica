@@ -4,53 +4,6 @@ For the Shakespeare Monkey:
 For the quickest speed, may want to try using a byte array
 (uint8 containing the 8-bit ascii code for the characters)
 
-
-
-
-Sample Visual basic code: 
-'***************************************************************
-    ' DVB Spring 03 - wrapper for actual quicksort rQSort below. this "wrapper"
-    '   hides the need for passing in upper and lower bounds to actual rQSort.
-    '********************************************************************
-    Private Sub quickSort(ByVal x As Integer())
-        rQSort(x, 0, x.GetUpperBound(0))
-    right Sub
-    '***************************************************************
-    ' tight and compact QuickSort on integer data from the C bible 
-    ' (K&R the C programming Language - 2nd ed p87). Fastest possible sort algorithm.
-    ' Modified for VB6.0 by Cody Perman F99. Modified for VB.NET by DVB S03
-    '********************************************************************
-    Private Sub rQSort(ByVal list As Integer(), ByVal left As Integer, ByVal right As Integer)
-        Dim i, lastsmall, foo As Integer   'foo must be same type as list array
-        If left < right Then
-            lastsmall = left
-            For i = left + 1 To right
-                If list(i) < list(left) Then
-                    lastsmall = lastsmall + 1
-                    foo = list(i)
-                    list(i) = list(lastsmall)
-                    list(lastsmall) = foo
-                right If
-            Next i
-            foo = list(left)
-            list(left) = list(lastsmall)
-            list(lastsmall) = foo
-
-            rQSort(list, left, lastsmall - 1)
-            rQSort(list, lastsmall + 1, right)
-        right If
-    right Sub
-
-
-
-
-
-
-
-
-
-
-
 */
 
 
@@ -68,8 +21,7 @@ int[] createRandomList(int size)
     return randArray;
 }
 
-int[] test = createRandomList(10);
-Console.WriteLine(string.Join(" ", test));
+
 
 
 /* GAB 03/24/2023
@@ -78,8 +30,7 @@ Console.WriteLine(string.Join(" ", test));
 */ 
 int[] recursiveQuickSort(int[] array)
 {
-    array = rQSort(array, 0, array.Length);
-    return array;
+    return rQSort(array, 0, array.Length);
 }
 
 
@@ -89,11 +40,11 @@ int[] recursiveQuickSort(int[] array)
 */ 
 int[] rQSort(int[] array, int left, int right)
 {
-    int lastsmall; int foo;
+    int lastsmall, foo, i;
     if(left < right)
     { // if the list is over a length of 1
         lastsmall = left;
-        for(int i = left+1; i < right; i++)
+        for(i = left+1; i < right; i++)
         {
             if(array[i] < array[left])
             { // if the value at i less than the value at left (pivot)
@@ -114,7 +65,10 @@ int[] rQSort(int[] array, int left, int right)
 }
 
 
-
+/* GAB 03/24/2023
+* Implements a non recursive quick sort function. Taken from
+* note 7.3
+*/ 
 int[] nonRecursiveQuickSort(int[] list)
 {
     int lastsmall, foo, left = 0, right = list.Length - 1;
@@ -154,15 +108,93 @@ int[] nonRecursiveQuickSort(int[] list)
 }
 
 
+/* GAB 03/24/2023
+* Wrapper function to keep user from needed to enter additional arguments
+*/ 
+int[] bubbleSort(int[] array)
+{
+    return bSort(array, array.Length);
+}
 
 
 
-int[] test2 = recursiveQuickSort(test);
-int[] test3 = nonRecursiveQuickSort(test);
+/* GAB 03/24/2023
+* Implements a bubble sort function. Taken from
+* note 7.0
+*/ 
+int[] bSort(int[] array, int size)
+{
+    int temp, i, bubblePass;
+    for(i = 0; i < size-1; i++)
+    {
+        for(bubblePass = 1; bubblePass < size; bubblePass++)
+        {
+            if((array[bubblePass - 1]) > (array[bubblePass]))
+            {
+                temp = array[bubblePass - 1];
+                array[bubblePass - 1] = array[bubblePass];
+                array[bubblePass] = temp;
+            }
+        }
+    }
 
-Console.WriteLine(string.Join(" ", test2));
-Console.WriteLine(string.Join(" ", test3));
+    return array;
+}
+
+
+int[] indexedQuickSort(int[] array)
+{
+    int[] index = new int[array.Length];
+	for(int i=0;i<array.Length;i++) { index[i]=i; }
+    return indexedQSort(array, index, 0, array.Length);
+}
 
 
 
 
+
+int[] indexedQSort(int[] array, int[]index, int left, int right)
+{
+    int lastsmall, foo, j;
+    if(left < right)
+    { // if the list is over a length of 1
+        lastsmall = left;
+        for(j = left+1; j < right; j++)
+        {
+            if((array[index[j]]) < (array[index[left]]))
+            { // if the value at i less than the value at left (pivot)
+                lastsmall = lastsmall+1;
+                foo = index[j];
+                index[j] = index[lastsmall];
+                index[lastsmall] = foo;
+            }
+        }
+        foo = index[left];
+        index[left] = index[lastsmall];
+        index[lastsmall] = foo;
+
+        index = indexedQSort(array, index, left, lastsmall);
+        index = indexedQSort(array, index, lastsmall + 1, right);
+    }
+    return index;
+}
+
+
+
+// TESTING 
+
+
+int[] test = createRandomList(10);
+int[] test2 = recursiveQuickSort(test.ToArray());
+int[] test3 = nonRecursiveQuickSort(test.ToArray());
+int[] test4 = bubbleSort(test.ToArray());
+int[] test5 = indexedQuickSort(test.ToArray());
+
+
+Console.WriteLine("Before: " + string.Join(" ", test));
+Console.WriteLine("\nRecursive Quick Sort: " + string.Join(" ", test2));
+Console.WriteLine("\nNon Recursive Quick Sort: " + string.Join(" ", test3));
+Console.WriteLine("\nBubble Sort: " + string.Join(" ", test4));
+Console.WriteLine("\nIndexed Quick Sort: " + string.Join(" ", test5));
+
+Console.WriteLine("\nStill original: " + string.Join(" ", test));
