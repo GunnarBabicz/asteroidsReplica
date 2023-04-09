@@ -1,4 +1,10 @@
-﻿/* 
+﻿using System.Text;
+using System.Diagnostics;
+
+
+
+
+/* 
 
 For the Shakespeare Monkey:
 For the quickest speed, may want to try using a byte array
@@ -10,69 +16,36 @@ For the quickest speed, may want to try using a byte array
 /* GAB 03/24/2023 - Creates a random int array of
 * given size for testing. 
 */ 
-Random random = new Random();
-int[] createRandomList(int size)
-{
-    int[] randArray = new int[size];
-    for(int i = 0; i < size; i++)
-    {
-        randArray[i] = random.Next(0, 100);
-    }
-    return randArray;
-}
-
-
 
 
 /* GAB 03/24/2023
 * wrapper for the recursive quickSort function. Keeps user from
 * needing to enter the upper and lower bounds
 */ 
-int[] recursiveQuickSort(int[] array)
-{
-    return rQSort(array, 0, array.Length);
-}
+
 
 
 /* GAB 03/24/2023
 * Implements the recursive quick sort function. Adapted
 * from K&R provided code to C#.
 */ 
-int[] rQSort(int[] array, int left, int right)
-{
-    int lastsmall, foo, i;
-    if(left < right)
-    { // if the list is over a length of 1
-        lastsmall = left;
-        for(i = left+1; i < right; i++)
-        {
-            if(array[i] < array[left])
-            { // if the value at i less than the value at left (pivot)
-                lastsmall = lastsmall+1;
-                foo = array[i];
-                array[i] = array[lastsmall];
-                array[lastsmall] = foo;
-            }
-        }
-        foo = array[left];
-        array[left] = array[lastsmall];
-        array[lastsmall] = foo;
-
-        array = rQSort(array, left, lastsmall);
-        array = rQSort(array, lastsmall + 1, right);
-    }
-    return array;
-}
 
 
 /* GAB 03/24/2023
 * Implements a non recursive quick sort function. Taken from
 * note 7.3
 */ 
-int[] nonRecursiveQuickSort(int[] list)
+
+int[] nonRecursiveQuickSort(int[] array)
+{
+    return nRQuickSort(array.ToArray());
+}
+
+
+int[] nRQuickSort(int[] list)
 {
     int lastsmall, foo, left = 0, right = list.Length - 1;
-    int[] leftRightStack = new int[1000];
+    int[] leftRightStack = new int[(list.Length + 6)];
     int stackTop = -1; // index to top element in stack
     leftRightStack[++stackTop] = left; // push left then right.
     leftRightStack[++stackTop] = right;
@@ -113,7 +86,7 @@ int[] nonRecursiveQuickSort(int[] list)
 */ 
 int[] bubbleSort(int[] array)
 {
-    return bSort(array, array.Length);
+    return bSort(array.ToArray(), array.Length);
 }
 
 
@@ -146,11 +119,8 @@ int[] indexedQuickSort(int[] array)
 {
     int[] index = new int[array.Length];
 	for(int i=0;i<array.Length;i++) { index[i]=i; }
-    return indexedQSort(array, index, 0, array.Length);
+    return indexedQSort(array.ToArray(), index, 0, array.Length);
 }
-
-
-
 
 
 int[] indexedQSort(int[] array, int[]index, int left, int right)
@@ -184,17 +154,137 @@ int[] indexedQSort(int[] array, int[]index, int left, int right)
 // TESTING 
 
 
-int[] test = createRandomList(10);
-int[] test2 = recursiveQuickSort(test.ToArray());
-int[] test3 = nonRecursiveQuickSort(test.ToArray());
-int[] test4 = bubbleSort(test.ToArray());
-int[] test5 = indexedQuickSort(test.ToArray());
 
 
-Console.WriteLine("Before: " + string.Join(" ", test));
-Console.WriteLine("\nRecursive Quick Sort: " + string.Join(" ", test2));
-Console.WriteLine("\nNon Recursive Quick Sort: " + string.Join(" ", test3));
-Console.WriteLine("\nBubble Sort: " + string.Join(" ", test4));
-Console.WriteLine("\nIndexed Quick Sort: " + string.Join(" ", test5));
 
-Console.WriteLine("\nStill original: " + string.Join(" ", test));
+
+//int[] test2 = recursiveQuickSort(test);
+
+//int[] test4 = bubbleSort(test);
+//int[] test5 = indexedQuickSort(test);
+
+
+
+int[] recursiveQuickSort(int[] array)
+{
+    return rQSort(array.ToArray(), 0, array.Length-1);
+}
+
+int[] rQSort(int[] array, int left, int right)
+{
+    int foo;
+    if (left < right)
+    { // if the list is over a length of 1
+        int lastsmall = left;
+        int pivot = array[left];
+        for (int i = left + 1; i <= right; i++)
+        {
+            if (array[i] < array[left])
+            { // if the value at i less than the value at left (pivot)
+                lastsmall++;
+                foo = array[i];
+                array[i] = array[lastsmall];
+                array[lastsmall] = foo;
+            }
+        }
+        foo = array[left];
+        array[left] = array[lastsmall];
+        array[lastsmall] = foo;
+
+        rQSort(array, left, lastsmall-1);
+        rQSort(array, lastsmall + 1, right);
+    }
+    return array;
+}
+
+
+void Swap(int[] a, int i, int j)
+{
+    int t = a[i];
+    a[i] = a[j];
+    a[j] = t;
+}
+
+int Partition(int[] a, int l, int r)
+{
+    int ndx = l;
+    int pivot = a[l];
+    for (int i = l+1; i <=r; i++)
+    {
+        if(a[i]<pivot)
+        {
+            ndx++;
+            Swap(a,ndx,i);
+        }
+    }
+    Swap(a, ndx, l);
+    return ndx;
+}
+
+int[] quickSort(int[] a, int l, int r)
+{
+    if(l<r)
+    {
+        var pi = Partition(a, l, r);
+        quickSort(a, l, pi - 1);
+        quickSort(a, pi+1, r);
+    }
+    return a;
+}
+
+
+int[] qS(int[]a)
+{
+    return(quickSort(a.ToArray(), 0, a.Length-1));
+}
+
+
+Random random = new Random(10);
+
+
+int[] createRandomArray(int size)
+{
+    int[] randArray = new int[size];
+    for (int i = 0; i < randArray.Length; i++)
+    {
+        randArray[i] = random.Next(0, 100);
+    }
+    return randArray;
+}
+
+
+int[] test = createRandomArray(10000000);
+
+string testBeardSort()
+{
+    for(int i = 0; i < 1; i++)
+    {
+        int[] sorted = recursiveQuickSort(test);
+        for(int j = 0; j < 9; j++)
+        {
+            if(sorted[j] > sorted[j+1]){return "Test Failed"; }
+        }
+    }
+    return "Test Passed";
+}
+
+string testWebSort()
+{
+    for(int i = 0; i < 1; i++)
+    {
+        int[] sorted = qS(test);
+        for(int j = 0; j < 9; j++)
+        {
+            if(sorted[j] > sorted[j+1]){return "Test Failed"; }
+        }
+    }
+    return "Test Passed";
+}
+
+
+//Console.WriteLine($"Beard: {testBeardSort()}");
+Console.WriteLine($"Web: {testWebSort()}");
+
+
+
+
