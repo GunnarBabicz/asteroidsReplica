@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblAsteroidsTitle = new System.Windows.Forms.Label();
             this.btnPlay = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.lblControls = new System.Windows.Forms.Label();
             this.btnTestAsteroid = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.tmrMovement = new System.Windows.Forms.Timer(this.components);
+            this.tmrLaser = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // lblAsteroidsTitle
@@ -105,6 +108,18 @@
             this.label1.TabIndex = 9;
             this.label1.Text = "*Work in Progress. Threading has not been implemented yet.";
             // 
+            // tmrMovement
+            // 
+            this.tmrMovement.Enabled = true;
+            this.tmrMovement.Interval = 25;
+            this.tmrMovement.Tick += new System.EventHandler(this.tmrMovementUpdate);
+            // 
+            // tmrLaser
+            // 
+            this.tmrLaser.Enabled = true;
+            this.tmrLaser.Interval = 400;
+            this.tmrLaser.Tick += new System.EventHandler(this.tmrLaserTick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -124,7 +139,8 @@
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,5 +154,7 @@
         private Label lblControls;
         private Button btnTestAsteroid;
         private Label label1;
+        private System.Windows.Forms.Timer tmrMovement;
+        private System.Windows.Forms.Timer tmrLaser;
     }
 }

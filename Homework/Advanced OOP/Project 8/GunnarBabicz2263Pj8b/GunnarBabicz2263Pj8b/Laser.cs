@@ -30,16 +30,11 @@ namespace GunnarBabicz2263Pj8b
         { 
 
             drawThing();
-
             while (isAlive) 
             {
-                Thread.Sleep(10);
                 eraseThing();
                 findPoints(1, speed);
                 origin = pointList[0];
-
-
-
                 if ((origin.X > resolutionWidth)
                 || (origin.X < 0) || (origin.Y < 0)
                     || (origin.Y > resolutionHeight) /*or collides with asteroid*/ )
@@ -47,6 +42,7 @@ namespace GunnarBabicz2263Pj8b
                     isAlive = false;
                 }
                 else { drawThing(); }
+                Thread.Sleep(20);
             }
         }
 

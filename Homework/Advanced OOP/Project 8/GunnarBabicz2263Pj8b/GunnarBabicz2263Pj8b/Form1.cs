@@ -12,8 +12,10 @@ namespace GunnarBabicz2263Pj8b
         // if the game is being played
         bool inPlay = false;
 
-        Ship player;
 
+        // the controls for the ship
+        bool left, right, forward, shoot;
+        Ship player;
         // game parameters
         Settings gameSettings;
 
@@ -39,8 +41,6 @@ namespace GunnarBabicz2263Pj8b
 
         // list of all the laser objects
         Laser[] lasers;
-
-
 
 
         /* GAB 04/07/2023
@@ -81,40 +81,14 @@ namespace GunnarBabicz2263Pj8b
 
 
         /* GAB 04/07/2023
-         *  When a key is pressed while Asteroids is open */
-        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if(inPlay) 
-            { // will only run if game is currently being played
-                if (e.KeyChar == 'a')
-                { // to rotate left
-                    player.Rotate(10);
-                    Thread.Sleep(10);
-                }
-                if (e.KeyChar == 'd')
-                { // to rotate right
-                    player.Rotate(-10);
-                    Thread.Sleep(10); // about 30.3 FPS
-                }
+         *  When a key is pressed while Asteroids is open
+         *
+         *  All that needs done is to change the method of input 
+         */
 
-                if (e.KeyChar == 'w')
-                { // to move forward
-                    player.moveForward();
-                    Thread.Sleep(10);
-                }
-
-                if (e.KeyChar == ' ')
-                { // to fire laser
-                    Laser laser = Event.createLaser(gameSettings, this.CreateGraphics(), player);
-                    Thread laserThread = new Thread(laser.simulateLaser);
-                    laserThread.Start();
-                }
-
-                if (e.KeyChar == 'p')
-                { // pause menu
-
-                }
-            }
+        // needs work 
+        private void keyisdown(object sender, KeyPressEventArgs e)
+        { 
         }
 
         /*
@@ -123,7 +97,70 @@ namespace GunnarBabicz2263Pj8b
          */
         private void btnExit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (inPlay)
+            { // will only run if game is currently being played
+                if (e.KeyCode == Keys.A)
+                { // to rotate left
+                    left = true;
+                }
+                if (e.KeyCode == Keys.D)
+                { // to rotate right
+                    right = true;
+                }
+
+                if (e.KeyCode == Keys.W)
+                { // to move forward
+                    forward = true;
+                }
+
+                if (e.KeyCode == Keys.Space)
+                { // to fire laser
+                    shoot = true;
+                }
+
+                if (e.KeyCode == Keys.P)
+                { // pause menu
+
+                }
+            }
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            {
+                if (inPlay)
+                { // will only run if game is currently being played
+                    if (e.KeyCode == Keys.A)
+                    { // to rotate left
+                        left = false;
+                    }
+
+                    if (e.KeyCode == Keys.D)
+                    { // to rotate right
+                        right = false;
+                    }
+
+                    if (e.KeyCode == Keys.W)
+                    { // to move forward
+                        forward = false;
+                    }
+
+                    if (e.KeyCode == Keys.Space)
+                    { // to fire laser
+                        shoot = false;
+                    }
+
+                    if (e.KeyCode == Keys.P)
+                    { // pause menu
+
+                    }
+                }
+            }
         }
 
 
@@ -135,6 +172,26 @@ namespace GunnarBabicz2263Pj8b
             foo.Enabled = false;
         }
 
+        // tickrate for the laser, keeps player from spamming lasers
+        private void tmrLaserTick(object sender, EventArgs e)
+        {
+            if (shoot == true)
+            {
+                Laser laser = Event.createLaser(gameSettings, this.CreateGraphics(), player);
+                Thread laserThread = new Thread(laser.simulateLaser);
+                laserThread.Start();
+            }
+        }
+
+
+        // events that will be performed each tick
+        private void tmrMovementUpdate(object sender, EventArgs e)
+        {
+            if (left == true) { player.Rotate(10); }
+            if (right == true) { player.Rotate(-10); }
+            if (forward == true) { player.moveForward(); }
+        }
+
         /* GAB 04/06/2023
          * Shows and activates the button provided */
         public void activateButton(Button foo) 
@@ -142,10 +199,6 @@ namespace GunnarBabicz2263Pj8b
             foo.Show();
             foo.Enabled = true;
         }
-
-
-
-
 
 
         /* GAB 04/07/2023

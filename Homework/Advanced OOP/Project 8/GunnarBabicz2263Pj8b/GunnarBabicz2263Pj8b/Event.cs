@@ -82,8 +82,7 @@ namespace GunnarBabicz2263Pj8b
                 vessel.yPos, vessel.xPos, 5, 0, 0, g);
             laser.Angle = vessel.Angle;
             laser.Speed = 30;
-            return laser;
-            
+            return laser; 
         }
 
         /* GAB 04/07/2023
