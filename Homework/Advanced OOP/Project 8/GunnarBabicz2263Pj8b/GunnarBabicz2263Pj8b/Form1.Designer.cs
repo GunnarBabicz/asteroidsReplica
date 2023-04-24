@@ -33,10 +33,8 @@
             this.btnPlay = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.lblControls = new System.Windows.Forms.Label();
-            this.btnTestAsteroid = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.tmrMovement = new System.Windows.Forms.Timer(this.components);
-            this.tmrLaser = new System.Windows.Forms.Timer(this.components);
+            this.txtPause = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblAsteroidsTitle
@@ -54,14 +52,14 @@
             // 
             // btnPlay
             // 
-            this.btnPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnPlay.Location = new System.Drawing.Point(117, 641);
+            this.btnPlay.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnPlay.Location = new System.Drawing.Point(551, 179);
             this.btnPlay.Name = "btnPlay";
             this.btnPlay.Size = new System.Drawing.Size(161, 23);
             this.btnPlay.TabIndex = 1;
-            this.btnPlay.Text = "Play (test ship)";
+            this.btnPlay.Text = "Play";
             this.btnPlay.UseVisualStyleBackColor = true;
-            this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
+            this.btnPlay.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnPlay_Click);
             // 
             // btnExit
             // 
@@ -72,7 +70,7 @@
             this.btnExit.TabIndex = 4;
             this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = true;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            this.btnExit.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnExit_Click);
             // 
             // lblControls
             // 
@@ -86,39 +84,24 @@
             this.lblControls.TabIndex = 7;
             this.lblControls.Text = "left: a      right: d  forward: w shoot: space";
             // 
-            // btnTestAsteroid
-            // 
-            this.btnTestAsteroid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnTestAsteroid.Location = new System.Drawing.Point(117, 670);
-            this.btnTestAsteroid.Name = "btnTestAsteroid";
-            this.btnTestAsteroid.Size = new System.Drawing.Size(161, 23);
-            this.btnTestAsteroid.TabIndex = 8;
-            this.btnTestAsteroid.Text = "Test Asteroid (runs for 3s)";
-            this.btnTestAsteroid.UseVisualStyleBackColor = true;
-            this.btnTestAsteroid.Click += new System.EventHandler(this.btnTestAsteroid_Click);
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(941, 696);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(327, 15);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "*Work in Progress. Threading has not been implemented yet.";
-            // 
             // tmrMovement
             // 
             this.tmrMovement.Enabled = true;
-            this.tmrMovement.Interval = 25;
-            this.tmrMovement.Tick += new System.EventHandler(this.tmrMovementUpdate);
+            this.tmrMovement.Interval = 20;
+            this.tmrMovement.Tick += new System.EventHandler(this.tmrTickUpdate);
             // 
-            // tmrLaser
+            // txtPause
             // 
-            this.tmrLaser.Enabled = true;
-            this.tmrLaser.Interval = 400;
-            this.tmrLaser.Tick += new System.EventHandler(this.tmrLaserTick);
+            this.txtPause.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.txtPause.AutoSize = true;
+            this.txtPause.Font = new System.Drawing.Font("Agency FB", 60F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtPause.ForeColor = System.Drawing.Color.White;
+            this.txtPause.Location = new System.Drawing.Point(523, 269);
+            this.txtPause.Name = "txtPause";
+            this.txtPause.Size = new System.Drawing.Size(219, 96);
+            this.txtPause.TabIndex = 8;
+            this.txtPause.Text = "Paused";
+            this.txtPause.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Form1
             // 
@@ -127,8 +110,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1280, 720);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnTestAsteroid);
+            this.Controls.Add(this.txtPause);
             this.Controls.Add(this.lblControls);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnPlay);
@@ -152,9 +134,7 @@
         private Button btnPlay;
         private Button btnExit;
         private Label lblControls;
-        private Button btnTestAsteroid;
-        private Label label1;
         private System.Windows.Forms.Timer tmrMovement;
-        private System.Windows.Forms.Timer tmrLaser;
+        private Label txtPause;
     }
 }

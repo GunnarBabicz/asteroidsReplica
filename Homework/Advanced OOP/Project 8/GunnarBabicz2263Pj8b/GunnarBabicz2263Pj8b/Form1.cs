@@ -10,17 +10,19 @@ namespace GunnarBabicz2263Pj8b
 
 
         // if the game is being played
-        bool inPlay = false;
-
+        bool inPlay;
+        bool paused;
 
         // the controls for the ship
         bool left, right, forward, shoot;
+
+
+        // keeps the player from spamming lasers
+        bool canFire;
+
         Ship player;
         // game parameters
         Settings gameSettings;
-
-
-
 
 
         /* maybe give the objects an index? This could be used to
@@ -36,11 +38,7 @@ namespace GunnarBabicz2263Pj8b
          * to only run once instead of using a while loop
          */
 
-        // list of all the asteroid objects
-        Asteroid[] asteroids;
 
-        // list of all the laser objects
-        Laser[] lasers;
 
 
         /* GAB 04/07/2023
@@ -55,28 +53,35 @@ namespace GunnarBabicz2263Pj8b
          *  Runs on Form start */
         private void Form1_Load(object sender, EventArgs e)
         {
+            inPlay = false;
+            paused= false;
+            txtPause.Hide();
             this.KeyPreview = true;
             gameSettings = new Settings(this.Size.Width, this.Size.Height);
             player = Event.spawnShip(gameSettings, this.CreateGraphics());
+            canFire = true;
         }
 
         /* GAB 04/07/2023
          *  Activates when the play button is pressed */
-        private void btnPlay_Click(object sender, EventArgs e)
+        private void btnPlay_Click(object sender, MouseEventArgs e)
         {
-
-            //deactivateButton(btnPlay);
+            // hides the menu buttons
+            deactivateButton(btnPlay);
             lblAsteroidsTitle.Hide();
-
             // renders the player's ship
             player.drawThing();
-
             // telling KeyPress the game is being played
             inPlay = true;
 
-            Asteroid asteroid = Event.spawnAsteroid(gameSettings, this.CreateGraphics());
-            Thread asteroidThread = new Thread(asteroid.testAsteroid);
-            asteroidThread.Start();
+
+            for (int i = 0; i < 10; i++) 
+            {
+                Asteroid asteroid = Event.spawnAsteroid(gameSettings, this.CreateGraphics());
+                Thread asteroidThread = new Thread(asteroid.testAsteroid);
+                asteroidThread.Start();
+            }
+            
         }
 
 
@@ -125,7 +130,16 @@ namespace GunnarBabicz2263Pj8b
 
                 if (e.KeyCode == Keys.P)
                 { // pause menu
-
+                    if (paused) 
+                    {
+                        paused = false;
+                        txtPause.Hide();
+                    }
+                    else 
+                    {
+                        paused = true;
+                        txtPause.Show();
+                    }
                 }
             }
         }
@@ -164,32 +178,38 @@ namespace GunnarBabicz2263Pj8b
         }
 
 
-        /* GAB 04/06/2023
-         * Hides and disables the button provided */
-        public void deactivateButton(Button foo) 
-        {
-            foo.Hide();
-            foo.Enabled = false;
-        }
 
-        // tickrate for the laser, keeps player from spamming lasers
-        private void tmrLaserTick(object sender, EventArgs e)
-        {
-            if (shoot == true)
-            {
-                Laser laser = Event.createLaser(gameSettings, this.CreateGraphics(), player);
-                Thread laserThread = new Thread(laser.simulateLaser);
-                laserThread.Start();
-            }
-        }
 
 
         // events that will be performed each tick
-        private void tmrMovementUpdate(object sender, EventArgs e)
+        private void tmrTickUpdate(object sender, EventArgs e)
         {
-            if (left == true) { player.Rotate(10); }
-            if (right == true) { player.Rotate(-10); }
-            if (forward == true) { player.moveForward(); }
+
+            if (!paused) 
+            { // if the game is paused. Will not currently work for asteroids
+                /* Player movement and actions */
+                if (left == true) { player.Rotate(10); }
+                if (right == true) { player.Rotate(-10); }
+                if (forward == true) { player.moveForward(); }
+                if ((shoot == true) && (canFire == true))
+                {
+                    Laser laser = Event.createLaser(gameSettings, this.CreateGraphics(), player);
+                    Thread laserThread = new Thread(laser.simulateLaser);
+                    /* disables the laser from firing again and
+                     * creates a thread for its timer */
+                    canFire = false;
+                    Thread laserBuffer = new Thread(fireDelay);
+
+                    // starts the threads
+                    laserThread.Start();
+                    laserBuffer.Start();
+                }
+
+                /* Testing for collisions */
+
+
+                /* Asteroid Movements */
+            }
         }
 
         /* GAB 04/06/2023
@@ -200,24 +220,22 @@ namespace GunnarBabicz2263Pj8b
             foo.Enabled = true;
         }
 
-
-        /* GAB 04/07/2023
-         *  Creates a random asteroid that moves for 3 seconds.
-         *  For testing purposes.
-         */
-        private void btnTestAsteroid_Click(object sender, EventArgs e)
+        /* GAB 04/06/2023
+        * Hides and disables the button provided */
+        public void deactivateButton(Button foo)
         {
-            inPlay = false;
-            Settings gameSettings = new Settings(this.Size.Width, this.Size.Height);
+            foo.Hide();
+            foo.Enabled = false;
+        }
 
-            /*
-            // despawning any extra objects
-            if (player != null) { Event.despawn(player); }
-            if (demoAsteroid != null) { Event.despawn(demoAsteroid); }
-            */
-            Asteroid asteroid = Event.spawnAsteroid(gameSettings, this.CreateGraphics());
-            Thread asteroidThread = new Thread(asteroid.testAsteroid);
-            asteroidThread.Start();
+
+        /*
+         * Delays the lasers to keep the player
+         * from spamming. */
+        public void fireDelay() 
+        {
+            Thread.Sleep(400);
+            canFire= true;
         }
     }
 }

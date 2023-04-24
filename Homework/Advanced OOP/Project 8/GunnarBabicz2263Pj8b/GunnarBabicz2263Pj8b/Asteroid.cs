@@ -18,11 +18,11 @@ namespace GunnarBabicz2263Pj8b
 
         public override void drawThing()
         {
-            g.DrawEllipse(p, origin.X - radius * 2, origin.Y - radius * 2, radius, radius);
+            g.DrawEllipse(p, origin.X - radius, origin.Y - radius, radius, radius);
         }
         public override void eraseThing()
         { 
-            g.DrawEllipse(eraser, origin.X - radius * 2, origin.Y - radius * 2, radius, radius);
+            g.DrawEllipse(eraser, origin.X - radius, origin.Y - radius, radius, radius);
         }
 
         public void move() 

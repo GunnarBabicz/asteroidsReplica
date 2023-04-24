@@ -199,11 +199,11 @@ namespace GunnarBabicz2263Pj8b
             findPoints(1, speed);
             origin = pointList[0];
 
-            if (origin.X > resolutionWidth) origin.X = 0;
-            if (origin.X < 0) origin.X = resolutionWidth;
+            if (origin.X > resolutionWidth + radius) origin.X = 0;
+            if (radius + origin.X < 0) origin.X = resolutionWidth;
 
-            if (origin.Y < 0) origin.Y = resolutionHeight;
-            if (origin.Y > resolutionHeight) origin.Y = 0;
+            if (radius + origin.Y < 0 ) origin.Y = resolutionHeight;
+            if ( origin.Y > resolutionHeight + radius) origin.Y = 0;
 
             drawThing();
         }
