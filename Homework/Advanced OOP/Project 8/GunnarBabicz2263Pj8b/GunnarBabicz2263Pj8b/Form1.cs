@@ -1,4 +1,5 @@
 using System.Drawing.Printing;
+using System.Security.Cryptography.X509Certificates;
 
 namespace GunnarBabicz2263Pj8b
 {
@@ -8,7 +9,8 @@ namespace GunnarBabicz2263Pj8b
     {
         // instance variables
 
-
+        
+        
         // if the game is being played
         bool inPlay;
         bool paused;
@@ -18,7 +20,7 @@ namespace GunnarBabicz2263Pj8b
 
 
         // keeps the player from spamming lasers
-        bool canFire;
+        bool canFire = true;
 
         Ship player;
         // game parameters
@@ -54,12 +56,12 @@ namespace GunnarBabicz2263Pj8b
         private void Form1_Load(object sender, EventArgs e)
         {
             inPlay = false;
-            paused= false;
+            paused= true;
             txtPause.Hide();
             this.KeyPreview = true;
             gameSettings = new Settings(this.Size.Width, this.Size.Height);
             player = Event.spawnShip(gameSettings, this.CreateGraphics());
-            canFire = true;
+
         }
 
         /* GAB 04/07/2023
@@ -73,13 +75,14 @@ namespace GunnarBabicz2263Pj8b
             player.drawThing();
             // telling KeyPress the game is being played
             inPlay = true;
-
+            paused= false;
+            events.newGame();
+            
+            
 
             for (int i = 0; i < 10; i++) 
             {
-                Asteroid asteroid = Event.spawnAsteroid(gameSettings, this.CreateGraphics());
-                Thread asteroidThread = new Thread(asteroid.testAsteroid);
-                asteroidThread.Start();
+                events.spawnAsteroid(gameSettings, this.CreateGraphics());
             }
             
         }
@@ -185,7 +188,7 @@ namespace GunnarBabicz2263Pj8b
         private void tmrTickUpdate(object sender, EventArgs e)
         {
 
-            if (!paused) 
+            if (paused == false) 
             { // if the game is paused. Will not currently work for asteroids
                 /* Player movement and actions */
                 if (left == true) { player.Rotate(10); }
@@ -193,22 +196,23 @@ namespace GunnarBabicz2263Pj8b
                 if (forward == true) { player.moveForward(); }
                 if ((shoot == true) && (canFire == true))
                 {
-                    Laser laser = Event.createLaser(gameSettings, this.CreateGraphics(), player);
-                    Thread laserThread = new Thread(laser.simulateLaser);
+                    events.fireLaser(gameSettings, this.CreateGraphics(), player);
+
                     /* disables the laser from firing again and
                      * creates a thread for its timer */
                     canFire = false;
                     Thread laserBuffer = new Thread(fireDelay);
-
-                    // starts the threads
-                    laserThread.Start();
                     laserBuffer.Start();
                 }
 
+                /* Asteroid Movements */
+                events.checkCollision();
                 /* Testing for collisions */
 
+                player.updatePosition();
 
-                /* Asteroid Movements */
+                txtScore.Text = ($"Score: {events.Score}");
+
             }
         }
 
@@ -234,7 +238,7 @@ namespace GunnarBabicz2263Pj8b
          * from spamming. */
         public void fireDelay() 
         {
-            Thread.Sleep(400);
+            Thread.Sleep(300);
             canFire= true;
         }
     }

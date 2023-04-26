@@ -8,17 +8,12 @@ namespace GunnarBabicz2263Pj8b
 {
     internal class Laser : Entity
     {
-
-
+        internal Point oldPos;
         public Laser(Settings gameSettings, int xFoo, int yFoo,
             int radiusFoo, int deltaXFoo, int deltaYFoo,
             Graphics gFoo) : base(gameSettings, xFoo, yFoo,
             radiusFoo, deltaXFoo, deltaYFoo,
-            gFoo)
-        { }
-
-
-
+            gFoo){}
 
 
         /* GAB 04/16/2023
@@ -27,23 +22,20 @@ namespace GunnarBabicz2263Pj8b
          * 
          */
         internal override void updatePosition()
-        { 
-
-            drawThing();
-            while (isAlive) 
+        {
+            createLine(eraser);
+            oldPos = origin;
+            findPoints(1, speed);
+            origin = pointList[0];
+            if ((origin.X > resolutionWidth)
+            || (origin.X < 0) || (origin.Y < 0)
+                || (origin.Y > resolutionHeight))
             {
-                eraseThing();
-                findPoints(1, speed);
-                origin = pointList[0];
-                if ((origin.X > resolutionWidth)
-                || (origin.X < 0) || (origin.Y < 0)
-                    || (origin.Y > resolutionHeight) /*or collides with asteroid*/ )
-                {
-                    isAlive = false;
-                }
-                else { drawThing(); }
-                Thread.Sleep(20);
+                isAlive = false;
             }
+            else { createLine(p); }
+            Thread.Sleep(20);
+
         }
 
 
@@ -55,16 +47,29 @@ namespace GunnarBabicz2263Pj8b
          */
         internal void primeLaser()
         {
+            oldPos = new Point(origin.X, origin.Y);
             findPoints(1, 25);
             origin = pointList[0];
+            createLine(p);
         }
 
 
         public void simulateLaser() 
         {
             primeLaser();
-            updatePosition();
+            while (isAlive) { updatePosition(); }
+            createLine(eraser);
         }
+
+
+        public void createLine(Pen penFoo) 
+        {
+            g.DrawLine(penFoo, origin, oldPos);
+        }
+
+
+
+
 
 
 

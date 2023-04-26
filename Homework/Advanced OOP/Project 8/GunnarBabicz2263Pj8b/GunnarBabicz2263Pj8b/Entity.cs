@@ -18,7 +18,7 @@ namespace GunnarBabicz2263Pj8b
         /* isAlive: if the entity has not 
          * been destroyed (think of it as hp, only has 1)
          */
-        internal bool isAlive;
+        public bool isAlive;
         internal Graphics g;
         internal Pen eraser;
         internal Pen p;
@@ -29,8 +29,11 @@ namespace GunnarBabicz2263Pj8b
         Color entityColor;
         internal int resolutionWidth, resolutionHeight;
         internal int angle = 0;
-        internal int speed = 10;
+        internal int speed = 0;
+        internal int maxSpeed = 30;
+        internal int acceleration = 0;
         internal Point origin;
+        public Point center;
         internal Point result = new Point(0, 0);
         internal List<Point> pointList = new List<Point>();
 
@@ -59,6 +62,7 @@ namespace GunnarBabicz2263Pj8b
             x = yFoo; y = xFoo;
 
             origin = new Point(x, y);
+            center = new Point (origin.X - radius, origin.Y - radius);
             radius = radiusFoo;
             deltaX = deltaXFoo; deltaY = deltaYFoo;
             xDir = 1;
@@ -109,6 +113,17 @@ namespace GunnarBabicz2263Pj8b
             drawVectorShape(2, p);
         }
 
+
+        /* GAB 04/25/2023
+         * If the entity is hit(killed) */
+
+        public void Hit() 
+        {
+            isAlive = false;
+        }
+
+
+
         /* GAB 04/07/2023
          * Erases the drawn Entity */
         public virtual void eraseThing()
@@ -131,13 +146,15 @@ namespace GunnarBabicz2263Pj8b
 
 
         /* GAB 04/07/2023
-         *  Finds the angle in radians of points
+         *  Finds the angle in degrees of points
          *  of a n sided object relative to the origin
          *  and if the object is already at an angle.
          *  
+         *  
+         *  
          *  Adapted from note 8.0.
          */
-        public double findAngleRadians(int iterationNum, int numPoints) 
+        public double findAngle(int iterationNum, int numPoints) 
         {
             int degreesBetweenPoints = (360 / numPoints);
             int pointAngle = angle - (degreesBetweenPoints * iterationNum);
@@ -152,15 +169,17 @@ namespace GunnarBabicz2263Pj8b
          *  For a shape of n sides,
          *  finds the coordinates of where its points
          *  would be on a circle of radius r.
+         *  
+         *  
          *  Adapted from note 8.0
          */
         internal void findPoints(int numSides, int radiusFoo)
         {
-            pointList.Clear(); //necessary, otherwise, the list won't start from scratch on the second try
+            pointList.Clear(); 
             for (int i = 1; i <= numSides; i++)
             {
-                result.X = origin.X + (int)Math.Round(radiusFoo * Math.Cos(findAngleRadians(i, numSides)));
-                result.Y = origin.Y - (int)Math.Round(radiusFoo * Math.Sin(findAngleRadians(i, numSides)));
+                result.X = origin.X + (int)Math.Round(radiusFoo * Math.Cos(findAngle(i, numSides)));
+                result.Y = origin.Y - (int)Math.Round(radiusFoo * Math.Sin(findAngle(i, numSides)));
                 if (!pointList.Contains(result))
                 {
                     pointList.Add(result);
@@ -171,17 +190,17 @@ namespace GunnarBabicz2263Pj8b
         /* GAB 04/06/2023
          * Creates a polygonal shape
          */
-        public virtual void drawLines(int numPoints, Pen pls)
+        public virtual void drawLines(int numPoints, Pen p)
         {// specifically for the spaceship
             for (int i = 0; i < numPoints; i++) 
             {
                 if (i+1 < numPoints)
                 { // if i is not on its last point
-                    g.DrawLine(pls, pointList[i], pointList[i+1]);
+                    g.DrawLine(p, pointList[i], pointList[i+1]);
                 }
                 else 
                 {
-                    g.DrawLine(pls, pointList[numPoints-1], pointList[0]);
+                    g.DrawLine(p, pointList[numPoints-1], pointList[0]);
                 }
             
             }
@@ -196,6 +215,7 @@ namespace GunnarBabicz2263Pj8b
             
             eraseThing();
 
+            
             findPoints(1, speed);
             origin = pointList[0];
 
@@ -205,6 +225,8 @@ namespace GunnarBabicz2263Pj8b
             if (radius + origin.Y < 0 ) origin.Y = resolutionHeight;
             if ( origin.Y > resolutionHeight + radius) origin.Y = 0;
 
+            center = new Point (origin.X - radius, origin.Y - radius);
+            acceleration = 0;
             drawThing();
         }
 

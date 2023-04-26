@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Pkcs;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace GunnarBabicz2263Pj8b
 {
     internal class Asteroid : Entity
     {
-
+        
         public Asteroid(Settings gameSettings, int xFoo, int yFoo,
             int radiusFoo, int deltaXFoo, int deltaYFoo,
             Graphics gFoo) : base(gameSettings, xFoo, yFoo,
@@ -18,11 +19,11 @@ namespace GunnarBabicz2263Pj8b
 
         public override void drawThing()
         {
-            g.DrawEllipse(p, origin.X - radius, origin.Y - radius, radius, radius);
+            g.DrawEllipse(p, center.X, center.Y, radius*2, radius*2);
         }
         public override void eraseThing()
         { 
-            g.DrawEllipse(eraser, origin.X - radius, origin.Y - radius, radius, radius);
+            g.DrawEllipse(eraser, center.X, center.Y, radius * 2, radius * 2);
         }
 
         public void move() 
@@ -32,14 +33,14 @@ namespace GunnarBabicz2263Pj8b
 
         public void testAsteroid()
         {
-            drawThing();
-
-            // runs the demo asteroid for 3 seconds
-            for (int i = 0; i < 300; i++)
+            while(isAlive)
             {
+                drawThing();
                 updatePosition();
-                Thread.Sleep(33);
+                Thread.Sleep(20);
             }
+            eraseThing();
+          
         }
     }
 }

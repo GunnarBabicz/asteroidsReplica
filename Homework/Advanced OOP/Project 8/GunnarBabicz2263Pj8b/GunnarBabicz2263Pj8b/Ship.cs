@@ -9,7 +9,8 @@ namespace GunnarBabicz2263Pj8b
     internal class Ship : Entity
     {
         // makes the engine flicker (visible every other frame)
-        int engineStagger = 0;
+        bool exhaustStagger = true;
+        bool exhaustDrawn = false;
         public Ship(Settings gameSettings, int xFoo, int yFoo,
             int radiusFoo, int deltaXFoo, int deltaYFoo,
             Graphics gFoo) : base(gameSettings, xFoo, yFoo, 
@@ -36,7 +37,7 @@ namespace GunnarBabicz2263Pj8b
 
         public void moveForward()
         {
-            updatePosition();
+            acceleration = 1;
         }
 
 
@@ -61,9 +62,9 @@ namespace GunnarBabicz2263Pj8b
          */
         public void Rotate(int degrees) 
         {
-            eraseThing();
+            //eraseThing();
             validateAngle(degrees);
-            drawThing();
+            //drawThing();
         }
 
 
@@ -71,9 +72,36 @@ namespace GunnarBabicz2263Pj8b
         public override void eraseThing()
         {
             drawLines(3, eraser);
+            if (exhaustDrawn)
+            {
+                eraseExhaust();
+                exhaustDrawn = false;
+            }
+
+
         }
 
 
+
+
+        private void exhaustLines(Pen penFoo) 
+        {
+            Point a = helpers.findMidpoint(pointList[0], origin);
+            Point b = helpers.findMidpoint(pointList[1], origin);
+            Point c = helpers.findMidpoint(pointList[0], pointList[1]);
+
+            Point d = new Point(origin.X - c.X, origin.Y - c.Y);
+            d.X = d.X * -1; d.Y= d.Y * -1;
+            c.X = c.X + d.X; c.Y = c.Y + d.Y;
+
+
+
+            g.DrawLine(penFoo, a, c);
+            g.DrawLine(penFoo, b, c);
+        }
+
+        private void drawExhaust() { exhaustLines(p); }
+        private void eraseExhaust() { exhaustLines(eraser); }
 
 
         /* GAB 04/06/2023
@@ -88,6 +116,7 @@ namespace GunnarBabicz2263Pj8b
             g.DrawLine(penFoo, pointList[2], pointList[0]);
         }
 
+        // pointlist[2]: Point of the ship
 
 
         public void simulateShip() 
@@ -98,6 +127,47 @@ namespace GunnarBabicz2263Pj8b
             }
         }
 
+
+        internal override void updatePosition()
+        { // only max speed for now, will eventually make speed increase incrementially
+
+            eraseThing();
+
+            Point old = new Point(origin.X, origin.Y);
+            findPoints(1, acceleration);
+
+            origin = pointList[0];
+
+            origin.X += deltaX;
+            origin.Y += deltaY;
+
+            deltaX = (origin.X - old.X);
+            deltaY = (origin.Y - old.Y);
+
+
+
+            if (origin.X > resolutionWidth + radius) origin.X = 0;
+            if (radius + origin.X < 0) origin.X = resolutionWidth;
+
+            if (radius + origin.Y < 0) origin.Y = resolutionHeight;
+            if (origin.Y > resolutionHeight + radius) origin.Y = 0;
+
+            center = new Point(origin.X - radius, origin.Y - radius);
+            
+            drawThing();
+            if (acceleration > 0)
+            {
+                if (exhaustStagger == true)
+                {
+                    drawExhaust();
+                    exhaustDrawn = true;
+                    exhaustStagger = false;
+                }
+                else { exhaustStagger = true; }
+            }
+            else { exhaustStagger = true; }
+            acceleration = 0;
+        }
 
         /* taken from note 
          */

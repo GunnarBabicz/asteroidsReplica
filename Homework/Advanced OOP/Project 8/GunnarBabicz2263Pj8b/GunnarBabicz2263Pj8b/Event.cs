@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,12 +8,13 @@ using System.Threading.Tasks;
 namespace GunnarBabicz2263Pj8b
 {
     /* GAB 04/05/2023
-     * Handles game events that need to be preformed.
+     * Event is a class to handle events such as spawning
      * Will likely split into smaller classes
      */
     internal class Event
     {
-
+        gameMaster Zeus;
+        Random random = new Random();
 
         /* GAB 04/07/2023
          *  Creates a new Ship object in the center of the screen */
@@ -20,49 +22,46 @@ namespace GunnarBabicz2263Pj8b
         {   // known bug: Will not support odd numbered screen sizes.
             int centerWidth = gameSettingsFoo.ResolutionHeight / 2;
             int centerHeight = gameSettingsFoo.ResolutionWidth / 2;
-            return new Ship(gameSettingsFoo, centerWidth, centerHeight, 14, 0, 0, g);
+            return new Ship(gameSettingsFoo, centerWidth, centerHeight, 30, 0, 0, g);
+        }
+
+
+        public void newGame() 
+        {
+            Zeus = new gameMaster();
+        }
+
+        public int Score 
+        {
+            get { return Zeus.score; }
         }
 
         /*GAB 04/06/2023
          * Spawns an asteroid with random size, location, and velocity.
          * Work in progress. */
-        public static Asteroid spawnAsteroid(Settings gameSettingsFoo, Graphics g) 
+        public void spawnAsteroid(Settings gameSettingsFoo, Graphics g) 
         { // spawns a astroid with random values
-            Random random = new Random();
-            int xPos = random.Next(0, gameSettingsFoo.ResolutionWidth);
-            int yPos = random.Next(0, gameSettingsFoo.ResolutionHeight);
-            int radius = random.Next(30, 80);
-            Asteroid asteroid = new Asteroid(gameSettingsFoo,
-                xPos, yPos, radius, 0, 0, g);
-            asteroid.Angle= random.Next(0, 35) * 10;
-            asteroid.speed = random.Next(5, 12);
-            return asteroid;
-        }
 
-        public void testAsteroid(Settings gameSettingsFoo, Graphics g) 
-        {
-            Asteroid jeb = spawnAsteroid(gameSettingsFoo, g);
-            jeb.drawThing();
+            int index = Zeus.canSpawnAsteroid();
+            if (index >= 0)
+            { /* spawns an asteroid with random size, location, and speed if spawn cap
+               * has not been reached */
+                int xPos = random.Next(0, gameSettingsFoo.ResolutionWidth);
+                int yPos = random.Next(0, gameSettingsFoo.ResolutionHeight);
+                int radius = random.Next(30, 80);
+                Asteroid asteroid = new Asteroid(gameSettingsFoo,
+                    xPos, yPos, radius, 0, 0, g);
+                asteroid.Angle = random.Next(0, 35) * 10;
+                asteroid.speed = random.Next(5, 12);
 
-            // runs the demo asteroid for 3 seconds
-            for (int i = 0; i < 90; i++)
-            {
-                jeb.updatePosition();
-                Thread.Sleep(33);
+                Zeus.spawnedAsteroids[index] = asteroid;
+                Zeus.NumberOfAsteroids++;
+
+                Thread asteroidThread = new Thread(asteroid.testAsteroid);
+                asteroidThread.Start();
             }
         }
 
-
-
-
-
-        /* GAB 04/07/2023
-         *  erases an entity from both the screen and memory */
-        public static void despawn(Entity entityFoo) 
-        {
-            entityFoo.eraseThing();
-            entityFoo = null;
-        }
 
 
         /* GAB 04/07/2023
@@ -75,23 +74,71 @@ namespace GunnarBabicz2263Pj8b
 
         /* GAB 04/07/2023
          *  Creates a new Laser object */
-        public static Laser createLaser(Settings gameSettingsFoo, Graphics g, Ship vessel)
+        public void fireLaser(Settings gameSettingsFoo, Graphics g, Ship vessel)
         {
-            //Settings gameSettings = new Settings(width, height);
-            Laser laser = new Laser(gameSettingsFoo,
+            int index = Zeus.canSpawnLaser();
+            if (index >= 0) 
+            {
+                Laser laser = new Laser(gameSettingsFoo,
                 vessel.yPos, vessel.xPos, 5, 0, 0, g);
-            laser.Angle = vessel.Angle;
-            laser.Speed = 30;
-            return laser; 
+                laser.Angle = vessel.Angle;
+                laser.Speed = 40;
+
+                Zeus.spawnedLasers[index] = laser;
+                Zeus.NumberOfLasers++;
+
+                Thread laserThread = new Thread(laser.simulateLaser);
+                laserThread.Start();
+                // starts the threads
+            }
         }
 
-        /* GAB 04/07/2023
-         *  If an asteroid is hit by a laser */
-        public void asteroidHit() { }
+        public void checkHits() 
+        {
+            int asteroidsChecked = 0;
+            int asteroidsAlive = Zeus.NumberOfAsteroids;
 
-        /* GAB 04/07/2023
-         *  If the player runs out of lives */
-        public void gameOver() { }
+            while (asteroidsChecked < asteroidsAlive) 
+            {
+                for (int i = 0; i < Zeus.spawnedAsteroids.Length; i++)
+                {
+                    if (Zeus.spawnedAsteroids[i] != null)
+                    {
+                        if (Zeus.spawnedAsteroids[i].isAlive == true)
+                        {
+                            asteroidsChecked++;
+                            for (int j = 0; j < Zeus.spawnedLasers.Length; j++)
+                            {
+                                if (Zeus.spawnedLasers[j] != null)
+                                {
+                                    if (Zeus.spawnedLasers[j].isAlive == true)
+                                    {
+                                        Point ast = Zeus.spawnedAsteroids[i].origin;
+                                        Point las = Zeus.spawnedLasers[j].origin;
+                                        
+                                        if (Zeus.spawnedAsteroids[i].radius > helpers.distanceBetween(ast, las))
+                                        {
+                                            Zeus.spawnedAsteroids[i].Hit();
+                                            Zeus.spawnedLasers[j].Hit();
+                                            Zeus.asteroidHit();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }       
+        }
+
+
+        public void checkCollision() 
+        {
+            if (Zeus.NumberOfLasers > 0) { checkHits(); }
+        }
+
+
+
     }
 
     

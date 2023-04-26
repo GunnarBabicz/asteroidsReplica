@@ -35,6 +35,7 @@
             this.lblControls = new System.Windows.Forms.Label();
             this.tmrMovement = new System.Windows.Forms.Timer(this.components);
             this.txtPause = new System.Windows.Forms.Label();
+            this.txtScore = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblAsteroidsTitle
@@ -103,6 +104,17 @@
             this.txtPause.Text = "Paused";
             this.txtPause.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // txtScore
+            // 
+            this.txtScore.AutoSize = true;
+            this.txtScore.Font = new System.Drawing.Font("Agency FB", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtScore.ForeColor = System.Drawing.Color.White;
+            this.txtScore.Location = new System.Drawing.Point(12, 9);
+            this.txtScore.Name = "txtScore";
+            this.txtScore.Size = new System.Drawing.Size(84, 32);
+            this.txtScore.TabIndex = 9;
+            this.txtScore.Text = "Score: 0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -110,6 +122,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1280, 720);
+            this.Controls.Add(this.txtScore);
             this.Controls.Add(this.txtPause);
             this.Controls.Add(this.lblControls);
             this.Controls.Add(this.btnExit);
@@ -129,12 +142,13 @@
         }
 
         #endregion
-
+        Event events = new Event();
         private Label lblAsteroidsTitle;
         private Button btnPlay;
         private Button btnExit;
         private Label lblControls;
         private System.Windows.Forms.Timer tmrMovement;
         private Label txtPause;
+        private Label txtScore;
     }
 }
