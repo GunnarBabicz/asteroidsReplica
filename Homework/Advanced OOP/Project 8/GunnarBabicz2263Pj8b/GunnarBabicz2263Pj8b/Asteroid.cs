@@ -10,7 +10,7 @@ namespace GunnarBabicz2263Pj8b
     internal class Asteroid : Entity
     {
         
-        public Asteroid(Settings gameSettings, int xFoo, int yFoo,
+        public Asteroid(GameParameters gameSettings, int xFoo, int yFoo,
             int radiusFoo, int deltaXFoo, int deltaYFoo,
             Graphics gFoo) : base(gameSettings, xFoo, yFoo,
             radiusFoo, deltaXFoo, deltaYFoo,

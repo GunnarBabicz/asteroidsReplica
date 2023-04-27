@@ -15,9 +15,9 @@ namespace GunnarBabicz2263Pj8b
     {
         // Initial variables
 
-        /* isAlive: if the entity has not 
-         * been destroyed (think of it as hp, only has 1)
-         */
+        // 
+        private GameParameters Parameters;
+
         public bool isAlive;
         internal Graphics g;
         internal Pen eraser;
@@ -40,7 +40,7 @@ namespace GunnarBabicz2263Pj8b
 
         /* GAB 04/07/2023
          *  Constructor */
-        public Entity(Settings gameSettings, int xFoo, int yFoo,
+        public Entity(GameParameters gameSettings, int xFoo, int yFoo,
             int radiusFoo, int deltaXFoo, int deltaYFoo,
             Graphics gFoo)
         {
@@ -173,7 +173,7 @@ namespace GunnarBabicz2263Pj8b
          *  
          *  Adapted from note 8.0
          */
-        internal void findPoints(int numSides, int radiusFoo)
+        public void findPoints(int numSides, int radiusFoo)
         {
             pointList.Clear(); 
             for (int i = 1; i <= numSides; i++)

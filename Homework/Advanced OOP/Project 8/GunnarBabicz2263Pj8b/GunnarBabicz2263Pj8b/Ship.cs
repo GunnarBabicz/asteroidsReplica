@@ -11,7 +11,7 @@ namespace GunnarBabicz2263Pj8b
         // makes the engine flicker (visible every other frame)
         bool exhaustStagger = true;
         bool exhaustDrawn = false;
-        public Ship(Settings gameSettings, int xFoo, int yFoo,
+        public Ship(GameParameters gameSettings, int xFoo, int yFoo,
             int radiusFoo, int deltaXFoo, int deltaYFoo,
             Graphics gFoo) : base(gameSettings, xFoo, yFoo, 
                 radiusFoo, deltaXFoo, deltaYFoo,
@@ -114,6 +114,9 @@ namespace GunnarBabicz2263Pj8b
             g.DrawLine(penFoo, origin, pointList[1]);
             g.DrawLine(penFoo, pointList[1], pointList[2]);
             g.DrawLine(penFoo, pointList[2], pointList[0]);
+
+
+            // drawing circle inside for testing
         }
 
         // pointlist[2]: Point of the ship
@@ -133,13 +136,25 @@ namespace GunnarBabicz2263Pj8b
 
             eraseThing();
 
+            // saves origin of ship before movement
             Point old = new Point(origin.X, origin.Y);
-            findPoints(1, acceleration);
 
-            origin = pointList[0];
 
+            // adding the speed already carried by the ship
             origin.X += deltaX;
             origin.Y += deltaY;
+
+
+            // finds what the position of the ship would be with the added acceleration
+            findPoints(1, acceleration);
+
+            // If the acceleration would make the speed over the max allowed, do not add.
+            if (helpers.distanceBetween(old, pointList[0]) <= maxSpeed)
+            {
+                origin = pointList[0];
+            }
+
+
 
             deltaX = (origin.X - old.X);
             deltaY = (origin.Y - old.Y);

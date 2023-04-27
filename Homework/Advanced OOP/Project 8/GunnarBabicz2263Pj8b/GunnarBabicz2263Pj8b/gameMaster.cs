@@ -15,7 +15,8 @@ namespace GunnarBabicz2263Pj8b
         internal int score = 0;
         private int level = 1;
         internal Asteroid[] spawnedAsteroids = new Asteroid[80];
-        internal Laser[] spawnedLasers = new Laser[10];
+        internal Laser[] spawnedLasers = new Laser[4];
+        internal Ship player;
 
         private int numberOfAsteroids = 0;
         private int numberOfLasers = 0;
@@ -82,7 +83,10 @@ namespace GunnarBabicz2263Pj8b
         }
 
 
-
+        public void addPlayer(Ship p) 
+        {
+            player = p;
+        }
 
 
 

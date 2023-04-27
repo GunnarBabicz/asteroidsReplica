@@ -24,7 +24,7 @@ namespace GunnarBabicz2263Pj8b
 
         Ship player;
         // game parameters
-        Settings gameSettings;
+        GameParameters gameSettingsFoo;
 
 
         /* maybe give the objects an index? This could be used to
@@ -59,8 +59,8 @@ namespace GunnarBabicz2263Pj8b
             paused= true;
             txtPause.Hide();
             this.KeyPreview = true;
-            gameSettings = new Settings(this.Size.Width, this.Size.Height);
-            player = Event.spawnShip(gameSettings, this.CreateGraphics());
+            gameSettingsFoo = new GameParameters(this.Size.Width, this.Size.Height);
+            player = GameEvent.spawnShip(gameSettingsFoo, this.CreateGraphics());
 
         }
 
@@ -73,16 +73,17 @@ namespace GunnarBabicz2263Pj8b
             lblAsteroidsTitle.Hide();
             // renders the player's ship
             player.drawThing();
+            
             // telling KeyPress the game is being played
             inPlay = true;
             paused= false;
-            events.newGame();
+            Event.newGame();
             
             
 
             for (int i = 0; i < 10; i++) 
             {
-                events.spawnAsteroid(gameSettings, this.CreateGraphics());
+                Event.spawnAsteroid(gameSettingsFoo, this.CreateGraphics());
             }
             
         }
@@ -99,14 +100,7 @@ namespace GunnarBabicz2263Pj8b
         { 
         }
 
-        /*
-         * Gunnar Babicz 04/05/2023
-         * If the user presses the exit button
-         */
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
+
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -190,13 +184,16 @@ namespace GunnarBabicz2263Pj8b
 
             if (paused == false) 
             { // if the game is paused. Will not currently work for asteroids
+
+                player = Event.checkShipCollision(player, gameSettingsFoo, this.CreateGraphics());
+
                 /* Player movement and actions */
                 if (left == true) { player.Rotate(10); }
                 if (right == true) { player.Rotate(-10); }
                 if (forward == true) { player.moveForward(); }
                 if ((shoot == true) && (canFire == true))
                 {
-                    events.fireLaser(gameSettings, this.CreateGraphics(), player);
+                    Event.fireLaser(gameSettingsFoo, CreateGraphics(), player);
 
                     /* disables the laser from firing again and
                      * creates a thread for its timer */
@@ -206,14 +203,24 @@ namespace GunnarBabicz2263Pj8b
                 }
 
                 /* Asteroid Movements */
-                events.checkCollision();
+                Event.checkCollision();
                 /* Testing for collisions */
 
                 player.updatePosition();
 
-                txtScore.Text = ($"Score: {events.Score}");
+                txtScore.Text = ($"Score: {Event.Score}");
 
             }
+        }
+
+
+        /*
+        * Gunnar Babicz 04/05/2023
+        * If the user presses the exit button
+        */
+        private void btnExit_Click(object sender, MouseEventArgs e)
+        {
+            Application.Exit();
         }
 
         /* GAB 04/06/2023
@@ -238,7 +245,7 @@ namespace GunnarBabicz2263Pj8b
          * from spamming. */
         public void fireDelay() 
         {
-            Thread.Sleep(300);
+            Thread.Sleep(100);
             canFire= true;
         }
     }

@@ -9,7 +9,7 @@ namespace GunnarBabicz2263Pj8b
     internal class Laser : Entity
     {
         internal Point oldPos;
-        public Laser(Settings gameSettings, int xFoo, int yFoo,
+        public Laser(GameParameters gameSettings, int xFoo, int yFoo,
             int radiusFoo, int deltaXFoo, int deltaYFoo,
             Graphics gFoo) : base(gameSettings, xFoo, yFoo,
             radiusFoo, deltaXFoo, deltaYFoo,
@@ -26,7 +26,7 @@ namespace GunnarBabicz2263Pj8b
             createLine(eraser);
             oldPos = origin;
             findPoints(1, speed);
-            origin = pointList[0];
+            origin = new Point(pointList[0].X, pointList[0].Y);
             if ((origin.X > resolutionWidth)
             || (origin.X < 0) || (origin.Y < 0)
                 || (origin.Y > resolutionHeight))
@@ -49,7 +49,7 @@ namespace GunnarBabicz2263Pj8b
         {
             oldPos = new Point(origin.X, origin.Y);
             findPoints(1, 25);
-            origin = pointList[0];
+            origin = new Point (pointList[0].X, pointList[0].Y);
             createLine(p);
         }
 
@@ -64,6 +64,7 @@ namespace GunnarBabicz2263Pj8b
 
         public void createLine(Pen penFoo) 
         {
+
             g.DrawLine(penFoo, origin, oldPos);
         }
 

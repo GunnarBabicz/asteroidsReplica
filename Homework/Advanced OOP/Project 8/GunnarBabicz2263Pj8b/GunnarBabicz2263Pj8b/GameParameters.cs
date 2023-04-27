@@ -10,31 +10,58 @@ namespace GunnarBabicz2263Pj8b
      * Stores parameters that are used to 
      * define other classes. Meant to reduce clutter.
      */
-    internal class Settings
+    public class GameParameters
     {
         // class variables 
+
+        // resolution of the window
         private int resolutionHeight;
         private int resolutionWidth;
+
+        // colors and pen parameters
         private Color entityColor = Color.White;
         private Color backgroundColor = Color.Black;
         private int penWidth = 1;
+
+
+        // gameplay variables (player viewable)
+        internal int score = 0;
+        private int level = 1;
+
+        // instance of the player
+        internal Ship player;
+
+
+        // internal variables (not viewable)
+        internal Asteroid[] spawnedAsteroids = new Asteroid[80];
+        internal Laser[] spawnedLasers = new Laser[4];
+        private int numberOfAsteroids = 0;
+        private int numberOfLasers = 0;
+
+
+
+
+
 
         /* While these variables may not stay here,
          * they will be needed somewhere in the program.
          * Will remain here for now. 
          */
-        public int score;
-        public int shipLives;
-        public int numberAsteroids;
-
 
 
         /* GAB 04/07/2023
-         *  Constructor */
-        public Settings(int resolutionWidthFoo, int resolutionHeightFoo)
+         *  Constructor if a resolution other than the standard 1080p is chosen */
+        public GameParameters(int resolutionWidthFoo, int resolutionHeightFoo)
         {
             resolutionWidth = resolutionWidthFoo;
             resolutionHeight = resolutionHeightFoo;
+        }
+
+        // Constructor with the default resolution of 1080p
+        public GameParameters()
+        {
+            resolutionWidth = 1920;
+            resolutionHeight = 1080;
         }
 
 
@@ -80,6 +107,14 @@ namespace GunnarBabicz2263Pj8b
             get { return penWidth; }
             set { penWidth = value; }
         }
+
+        public void addAsteroid() { numberOfAsteroids++; }
+
+        public void removeAsteroid() { numberOfAsteroids--; }
+
+        public void addLaser() { numberOfLasers++; }
+
+        public void removeLaser() { numberOfLasers--; }
 
     }
 }
