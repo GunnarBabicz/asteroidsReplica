@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,11 +19,12 @@ namespace GunnarBabicz2263Pj8b
         private GameParameters para;
         Random random = new Random();
 
-
+        // The entities are made smaller or larger based on the resolution
 
         public void gameStart(GameParameters foo) 
         {
-            para= foo;
+            para = foo;
+            para.lives = 3;
         }
 
 
@@ -30,9 +33,9 @@ namespace GunnarBabicz2263Pj8b
          *  Creates a new Ship object in the center of the screen */
         public static Ship spawnShip(GameParameters gameSettingsFoo) 
         {   // known bug: Will not support odd numbered screen sizes.
-            int centerWidth = gameSettingsFoo.ResolutionHeight / 2;
-            int centerHeight = gameSettingsFoo.ResolutionWidth / 2;
-            return new Ship(gameSettingsFoo, centerWidth, centerHeight, 30, 0, 0, g);
+            int centerHeight = gameSettingsFoo.Height / 2;
+            int centerWidth = gameSettingsFoo.Width / 2;
+            return new Ship(gameSettingsFoo, centerWidth, centerHeight, gameSettingsFoo.scale);
         }
 
 
@@ -46,24 +49,31 @@ namespace GunnarBabicz2263Pj8b
         /*GAB 04/06/2023
          * Spawns an asteroid with random size, location, and velocity.
          * Work in progress. */
-        public void spawnRandomAsteroid(Graphics g) 
+        public void spawnRandomAsteroid() 
         { // spawns a astroid with random values
 
             int index = helpers.firstValid(para.spawnedAsteroids);
             if (index >= 0)
             { /* spawns an asteroid with random size, location, and speed if spawn cap
                * has not been reached */
-                int xPos = random.Next(0, para.ResolutionWidth);
-                int yPos = random.Next(0, para.ResolutionHeight);
-                int radius = random.Next(30, 80);
+
+                // this block of code keeps asteroids from spawning on top of the player
+                int positiveOrNegative = random.Next(2);
+                if (positiveOrNegative == 0) { positiveOrNegative = 1; }
+                else { positiveOrNegative = -1; }
+                int xPos = (para.Width/2 + (random.Next(para.scale*3, para.Width/2)*positiveOrNegative));
+                int yPos = (para.Height + (random.Next(para.scale*3, para.Height/2)*positiveOrNegative));
+
+
+                int radius = random.Next(1, 4) * (para.scale-10);
                 Asteroid asteroid = new Asteroid(para,
-                    xPos, yPos, radius, 0, 0, g);
+                    xPos, yPos, radius);
                 asteroid.Angle = random.Next(0, 35) * 10;
-                asteroid.speed = random.Next(5, 12);
+                asteroid.speed = random.Next(4, 6) + para.level;
 
-                para.spawnedAsteroids[index] = asteroid;
+                para.addAsteroid(index, asteroid);
 
-                Thread asteroidThread = new Thread(asteroid.testAsteroid);
+                Thread asteroidThread = new Thread(asteroid.levelBeginning);
                 asteroidThread.Start();
             }
         }
@@ -77,9 +87,9 @@ namespace GunnarBabicz2263Pj8b
             if (i >= 0) 
             { // if a laser is able to be spawned
                 Laser laser = new Laser(para,
-                vessel.yPos, vessel.xPos, 5, 0, 0, g);
+                vessel.xPos, vessel.yPos, 5);
                 laser.Angle = vessel.Angle;
-                laser.Speed = 40;
+                laser.Speed = 50;
 
                 para.addLaser(i, laser);
                 Thread laserThread = new Thread(laser.simulateLaser);
@@ -94,12 +104,20 @@ namespace GunnarBabicz2263Pj8b
             { // for each asteroid in the array
                 if (helpers.entityIsAlive(para.spawnedAsteroids[i]))
                 { // if the asteroid should be checked
+                    Asteroid astrd = para.spawnedAsteroids[i];
                     for (int j = 0; j < para.spawnedLasers.Length; j++)
                     { // for each laser in the array
                         if (helpers.entityIsAlive(para.spawnedLasers[j]))
                         { // if the laser should be checked
-                            if (helpers.circlePointCollision(para.spawnedAsteroids[i], para.spawnedLasers[j]))
+                            Laser lsr = para.spawnedLasers[j];
+                            if (helpers.circlePointCollision(astrd, lsr))
                             { // if the two collided
+                                para.score += 100;
+                                if(astrd.radius > (para.scale - 10)) 
+                                {
+                                    asteroidSplit(astrd);
+                                }
+                                
                                 laserHit(i, j);
                             }
                         }
@@ -136,7 +154,7 @@ namespace GunnarBabicz2263Pj8b
                 { // if the asteroid should be checked
                     if (helpers.checkShipCollision(player, para.spawnedAsteroids[i]))
                     {
-                        return (playerHit(player, g));
+                        return (playerHit(player));
                     }
                 }
             }
@@ -145,17 +163,50 @@ namespace GunnarBabicz2263Pj8b
 
 
         // if the player is hit
-        private Ship playerHit(Ship player, Graphics g) 
+        private Ship playerHit(Ship player) 
         {
+            player.canCollide = false;
             player.eraseThing();
             Thread.Sleep(1000);
             Ship newPlayer = spawnShip(para);
-            newPlayer.drawThing();
+            while (helpers.closestAsteroid(newPlayer, para) < (newPlayer.radius * 6)) { Thread.Sleep(20); }
+            para.lives--;
             return newPlayer;
         }
-    
 
+
+
+        private void asteroidSplit(Asteroid ast)
+        {
+            int multiplier = 1;
+
+            for (int i = 0; i < 2; i++) 
+            {
+                int index = helpers.firstValid(para.spawnedAsteroids);
+                if (index >= 0)
+                { // if the spawn cap for asteroids has not been reached
+
+                    Asteroid asteroid = new Asteroid(para, ast.origin.X, ast.origin.Y, ast.radius - (para.scale - 10));
+
+                    asteroid.Angle = (ast.angle + (random.Next(5, 20) * multiplier));
+                    multiplier = -1;
+                    asteroid.speed = ast.speed + 2;
+
+                    para.addAsteroid(index, asteroid);
+                    Thread asteroidThread = new Thread(asteroid.simulateAsteroid);
+                    asteroidThread.Start();
+                }
+            }      
+        }
+
+
+        internal void nextLevel() 
+        { // generates the asteroids for each level. Gets progressively harder.
+            for (int i = 0; i < 20; i++) 
+            {
+                spawnRandomAsteroid();
+            }
+        }
 
     }
-
 }

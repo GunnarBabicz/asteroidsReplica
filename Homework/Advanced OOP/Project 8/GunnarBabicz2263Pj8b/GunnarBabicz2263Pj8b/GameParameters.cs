@@ -30,8 +30,8 @@ namespace GunnarBabicz2263Pj8b
 
         // gameplay variables (player viewable)
         internal int score = 0;
-        internal int level = 1;
-        internal int lives = 3;
+        internal int level = 0;
+        internal int lives = 0;
 
 
         // instance of the player
@@ -43,8 +43,11 @@ namespace GunnarBabicz2263Pj8b
         internal Laser[] spawnedLasers = new Laser[4];
         internal int numberOfAsteroids = 0;
         internal int numberOfLasers = 0;
+        internal bool inPlay = false;
 
 
+        // used to scale entity size based on screen width
+        internal int scale;
 
 
 
@@ -61,6 +64,7 @@ namespace GunnarBabicz2263Pj8b
         {
             resolutionWidth = resolutionWidthFoo;
             resolutionHeight = resolutionHeightFoo;
+            defineScale();
         }
 
         // Constructor with the default resolution of 720p
@@ -68,6 +72,15 @@ namespace GunnarBabicz2263Pj8b
         {
             resolutionWidth = 1280;
             resolutionHeight = 720;
+            defineScale();
+        }
+
+        private void defineScale() 
+        {
+            double rawNum = (resolutionWidth / 2560) * 50;
+            scale = (int)Math.Round(rawNum);
+            /* creates a size scaler for the entities based on the resolution width.
+             * Adapted from the dev resolution of 2560x1440. */
         }
 
 
@@ -78,7 +91,7 @@ namespace GunnarBabicz2263Pj8b
 
         /* GAB 04/07/2023
          *  getter/setter for width of the screen*/
-        public int ResolutionWidth
+        public int Width
         {
             get { return resolutionWidth; }
             set { resolutionWidth = value; }
@@ -86,7 +99,7 @@ namespace GunnarBabicz2263Pj8b
 
         /* GAB 04/07/2023
          *  getter/setter for height of the screen */
-        public int ResolutionHeight
+        public int Height
         {
             get { return resolutionHeight; }
             set { resolutionHeight = value; }
@@ -116,8 +129,6 @@ namespace GunnarBabicz2263Pj8b
             set { penWidth = value; }
         }
 
-
-
         internal void addAsteroid(int i, Asteroid Foo) 
         {
             spawnedAsteroids[i] = Foo;
@@ -141,6 +152,5 @@ namespace GunnarBabicz2263Pj8b
             spawnedLasers[i].isAlive = false;
             numberOfLasers--; 
         }
-
     }
 }

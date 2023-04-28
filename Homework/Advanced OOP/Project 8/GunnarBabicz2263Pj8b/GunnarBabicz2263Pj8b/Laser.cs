@@ -10,10 +10,8 @@ namespace GunnarBabicz2263Pj8b
     {
         internal Point oldPos;
         public Laser(GameParameters gameSettings, int xFoo, int yFoo,
-            int radiusFoo, int deltaXFoo, int deltaYFoo,
-            Graphics gFoo) : base(gameSettings, xFoo, yFoo,
-            radiusFoo, deltaXFoo, deltaYFoo,
-            gFoo){}
+            int radiusFoo) : base(gameSettings, xFoo, yFoo,
+            radiusFoo){}
 
 
         /* GAB 04/16/2023
@@ -48,7 +46,7 @@ namespace GunnarBabicz2263Pj8b
         internal void primeLaser()
         {
             oldPos = new Point(origin.X, origin.Y);
-            findPoints(1, 25);
+            findPoints(1, (parameters.scale));
             origin = new Point (pointList[0].X, pointList[0].Y);
             createLine(p);
         }
@@ -57,6 +55,7 @@ namespace GunnarBabicz2263Pj8b
         public void simulateLaser() 
         {
             primeLaser();
+            canCollide = true;
             while (isAlive) { updatePosition(); }
             createLine(eraser);
         }

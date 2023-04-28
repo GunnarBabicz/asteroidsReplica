@@ -110,7 +110,7 @@ namespace GunnarBabicz2263Pj8b
         {
             if (entityFoo != null)
             { // if the entity is both not null and alive
-                if (entityFoo.isAlive == true) { return true; }
+                if ((entityFoo.isAlive == true) && (entityFoo.canCollide == true)) { return true; }
             }
             // if the entity is either null or dead
             return false;
@@ -140,10 +140,28 @@ namespace GunnarBabicz2263Pj8b
         }
 
 
+        public int roundIntTimesDouble(int i, double d) 
+        {
+            double raw = (i * d);
+            return (int)Math.Round(raw);
+        }
 
-
-
-
+        public static int closestAsteroid(Ship player, GameParameters gp) 
+        {
+            int closestDistance = gp.Width;
+            for (int i = 0; i < gp.spawnedAsteroids.Length; i++) 
+            {
+                if (helpers.entityIsAlive(gp.spawnedAsteroids[i])) 
+                {
+                    int currentDistance = distanceBetween(gp.spawnedAsteroids[i].origin, player.origin);
+                    if (currentDistance < closestDistance)
+                    {
+                        closestDistance = currentDistance;
+                    }
+                }
+            }
+            return closestDistance;
+        }
 
 
     }

@@ -16,14 +16,14 @@ namespace GunnarBabicz2263Pj8b
         // Initial variables
 
         // 
-        private GameParameters parameters;
-
+        internal GameParameters parameters;
+        internal bool canCollide = false;
         public bool isAlive;
         internal Graphics g;
         internal Pen eraser;
         internal Pen p;
         int penWidth;
-        public int x, y, radius, deltaX, deltaY;
+        public int x, y, radius, deltaX = 0, deltaY = 0;
         Color backgroundColor;
         Color entityColor;
         internal int resolutionWidth, resolutionHeight;
@@ -40,30 +40,28 @@ namespace GunnarBabicz2263Pj8b
         /* GAB 04/07/2023
          *  Constructor */
         public Entity(GameParameters parametersFoo, int xFoo, int yFoo,
-            int radiusFoo, int deltaXFoo, int deltaYFoo,
-            Graphics gFoo)
+            int radiusFoo)
         {
             parameters = parametersFoo;
             // Screen resolution
-            resolutionWidth = parametersFoo.ResolutionWidth;
-            resolutionHeight = parametersFoo.ResolutionHeight;
+            resolutionWidth = parametersFoo.Width;
+            resolutionHeight = parametersFoo.Height;
 
 
             // entity colors and creation tools
             entityColor = parametersFoo.EntityColor;
             backgroundColor = parametersFoo.BackgroundColor;
             penWidth = parametersFoo.PenWidth;
-            g = gFoo;
+            g = parameters.f1.CreateGraphics();
             p = new Pen(entityColor, penWidth);
             eraser = new Pen(backgroundColor, penWidth);
 
             // initial coordinates size, and attitude of Entity
-            x = yFoo; y = xFoo;
+            x = xFoo; y = yFoo;
 
             origin = new Point(x, y);
             center = new Point (origin.X - radius, origin.Y - radius);
             radius = radiusFoo;
-            deltaX = deltaXFoo; deltaY = deltaYFoo;
             isAlive= true;
         }
 

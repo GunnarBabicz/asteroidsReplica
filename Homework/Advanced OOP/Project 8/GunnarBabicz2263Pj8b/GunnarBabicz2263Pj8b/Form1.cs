@@ -1,5 +1,6 @@
 using System.Drawing.Printing;
 using System.Security.Cryptography.X509Certificates;
+using System.Windows.Forms.Automation;
 
 namespace GunnarBabicz2263Pj8b
 {
@@ -12,8 +13,7 @@ namespace GunnarBabicz2263Pj8b
         
         
         // if the game is being played
-        bool inPlay;
-        bool paused;
+
 
         // the controls for the ship
         bool left, right, forward, shoot;
@@ -21,11 +21,12 @@ namespace GunnarBabicz2263Pj8b
 
         // keeps the player from spamming lasers
         bool canFire = true;
+        bool waitIsOver = false;
 
         Ship player;
 
 
-        GameParameters parameters = new GameParameters();
+        GameParameters parameters;
         /* maybe give the objects an index? This could be used to
          * specifically despawn them if a list is the decided upon choice
          * to manage classes of entities. May just be able to despawn them
@@ -57,20 +58,20 @@ namespace GunnarBabicz2263Pj8b
          *  Runs on Form start */
         private void Form1_Load(object sender, EventArgs e)
         {
-            inPlay = false;
-            paused= true;
-            txtPause.Hide();
+
+            lblSubtitle.Hide();
             this.KeyPreview = true;
-            parameters = new GameParameters(this.Size.Width, this.Size.Height);
-            parameters.loadForm(this);
+
             // need to define the parameters for each class that will use them
 
+            deactivateButton(btnMainMenu);
+            lblScore.Hide();
+            lblLives.Hide();
+            lblLevel.Hide();
 
-
-
-
-            player = GameEvent.spawnShip(parameters, this.CreateGraphics());
-
+            parameters = new GameParameters(this.Size.Width, this.Size.Height);
+            parameters.loadForm(this);
+            player = GameEvent.spawnShip(parameters);
         }
 
         /* GAB 04/07/2023
@@ -78,24 +79,19 @@ namespace GunnarBabicz2263Pj8b
         private void btnPlay_Click(object sender, MouseEventArgs e)
         {
             // Loads the current game parameters into the event manager
-            Event.loadParameters(parameters);
+            Event.gameStart(parameters);
             // hides the menu buttons
             deactivateButton(btnPlay);
-            lblAsteroidsTitle.Hide();
+            lblTitle.Hide();
             // renders the player's ship
             player.drawThing();
-            
+            player.canCollide = true;
             // telling KeyPress the game is being played
-            inPlay = true;
-            paused= false;
 
-            
-            
+            lblScore.Show();
+            lblLives.Show();
+            lblLevel.Show();
 
-            for (int i = 0; i < 10; i++) 
-            {
-                Event.spawnRandomAsteroid(this.CreateGraphics());
-            }
             
         }
 
@@ -105,17 +101,9 @@ namespace GunnarBabicz2263Pj8b
          *
          *  All that needs done is to change the method of input 
          */
-
-        // needs work 
-        private void keyisdown(object sender, KeyPressEventArgs e)
-        { 
-        }
-
-
-
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (inPlay)
+            if (parameters.lives > 0 && (player.canCollide))
             { // will only run if game is currently being played
                 if (e.KeyCode == Keys.A)
                 { // to rotate left
@@ -135,27 +123,13 @@ namespace GunnarBabicz2263Pj8b
                 { // to fire laser
                     shoot = true;
                 }
-
-                if (e.KeyCode == Keys.P)
-                { // pause menu
-                    if (paused) 
-                    {
-                        paused = false;
-                        txtPause.Hide();
-                    }
-                    else 
-                    {
-                        paused = true;
-                        txtPause.Show();
-                    }
-                }
             }
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             {
-                if (inPlay)
+                if (parameters.lives > 0 && player.canCollide)
                 { // will only run if game is currently being played
                     if (e.KeyCode == Keys.A)
                     { // to rotate left
@@ -193,11 +167,13 @@ namespace GunnarBabicz2263Pj8b
         private void tmrTickUpdate(object sender, EventArgs e)
         {
 
-            if (paused == false) 
+            if (parameters.lives > 0)
             { // if the game is paused. Will not currently work for asteroids
 
-
+                
                 player = Event.checkCollision(player, this.CreateGraphics());
+                player.drawThing();
+                player.canCollide = true;
 
                 /* Player movement and actions */
                 if (left == true) { player.Rotate(10); }
@@ -220,8 +196,23 @@ namespace GunnarBabicz2263Pj8b
                 player.updatePosition();
 
                 // updating the score
-                txtScore.Text = ($"Score: {parameters}");
+                lblScore.Text = ($"Score: {parameters.score}");
+                lblLives.Text = ($"Lives:{parameters.lives}");
+                lblLevel.Text = ($"Level: {parameters.level}");
 
+
+                if ((parameters.numberOfAsteroids == 0))
+                {
+                    parameters.level++;
+                    Event.nextLevel();
+                }
+
+
+            }
+            else if ((parameters.lives < 1) && (parameters.level > 0)) 
+            {
+                player.eraseThing();
+                gameOver();
             }
         }
 
@@ -243,6 +234,7 @@ namespace GunnarBabicz2263Pj8b
             foo.Enabled = true;
         }
 
+
         /* GAB 04/06/2023
         * Hides and disables the button provided */
         public void deactivateButton(Button foo)
@@ -251,14 +243,41 @@ namespace GunnarBabicz2263Pj8b
             foo.Enabled = false;
         }
 
+        private void btnMainMenu_Click(object sender, EventArgs e)
+        {
+            parameters = new GameParameters(this.Size.Width, this.Size.Height);
+            parameters.loadForm(this);
+            deactivateButton(btnMainMenu);
+            activateButton(btnPlay);
+            lblSubtitle.Hide();
+            lblTitle.Text = "Asteroids";
+        }
+
 
         /*
          * Delays the lasers to keep the player
          * from spamming. */
         public void fireDelay() 
         {
-            Thread.Sleep(100);
+            Thread.Sleep(150);
             canFire= true;
         }
+
+
+
+        private void gameOver() 
+        {
+
+            lblLives.Hide();
+            lblScore.Hide();
+            lblLevel.Hide();
+            lblTitle.Text = "Game Over";
+            lblSubtitle.Text = $"Score: {parameters.score}";
+            lblSubtitle.Show();
+            lblTitle.Show();
+            activateButton(btnMainMenu);
+        }
+
+
     }
 }

@@ -11,12 +11,11 @@ namespace GunnarBabicz2263Pj8b
         // makes the engine flicker (visible every other frame)
         bool exhaustStagger = true;
         bool exhaustDrawn = false;
-        public Ship(GameParameters gameSettings, int xFoo, int yFoo,
-            int radiusFoo, int deltaXFoo, int deltaYFoo,
-            Graphics gFoo) : base(gameSettings, xFoo, yFoo, 
-                radiusFoo, deltaXFoo, deltaYFoo,
-            gFoo)
-        { }
+
+
+
+        public Ship(GameParameters gameSettings, int xFoo, int yFoo, int radiusFoo)
+            : base(gameSettings, xFoo, yFoo, radiusFoo){}
 
 
         /* GAB 04/06/2023
@@ -77,8 +76,6 @@ namespace GunnarBabicz2263Pj8b
                 eraseExhaust();
                 exhaustDrawn = false;
             }
-
-
         }
 
 

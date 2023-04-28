@@ -29,32 +29,35 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.lblAsteroidsTitle = new System.Windows.Forms.Label();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.btnPlay = new System.Windows.Forms.Button();
             this.lblControls = new System.Windows.Forms.Label();
             this.tmrMovement = new System.Windows.Forms.Timer(this.components);
-            this.txtPause = new System.Windows.Forms.Label();
-            this.txtScore = new System.Windows.Forms.Label();
+            this.lblSubtitle = new System.Windows.Forms.Label();
+            this.lblScore = new System.Windows.Forms.Label();
             this.btnExit = new System.Windows.Forms.Button();
+            this.lblLives = new System.Windows.Forms.Label();
+            this.lblLevel = new System.Windows.Forms.Label();
+            this.btnMainMenu = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // lblAsteroidsTitle
+            // lblTitle
             // 
-            this.lblAsteroidsTitle.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.lblAsteroidsTitle.AutoSize = true;
-            this.lblAsteroidsTitle.Font = new System.Drawing.Font("Agency FB", 90F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblAsteroidsTitle.ForeColor = System.Drawing.Color.White;
-            this.lblAsteroidsTitle.Location = new System.Drawing.Point(410, 9);
-            this.lblAsteroidsTitle.Name = "lblAsteroidsTitle";
-            this.lblAsteroidsTitle.Size = new System.Drawing.Size(424, 143);
-            this.lblAsteroidsTitle.TabIndex = 0;
-            this.lblAsteroidsTitle.Text = "Asteroids";
-            this.lblAsteroidsTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTitle.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.lblTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblTitle.Font = new System.Drawing.Font("Agency FB", 90F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblTitle.ForeColor = System.Drawing.Color.White;
+            this.lblTitle.Location = new System.Drawing.Point(2, 9);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(1260, 143);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "Asteroids";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnPlay
             // 
             this.btnPlay.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnPlay.Location = new System.Drawing.Point(543, 179);
+            this.btnPlay.Location = new System.Drawing.Point(543, 329);
             this.btnPlay.Name = "btnPlay";
             this.btnPlay.Size = new System.Drawing.Size(161, 23);
             this.btnPlay.TabIndex = 1;
@@ -80,29 +83,30 @@
             this.tmrMovement.Interval = 20;
             this.tmrMovement.Tick += new System.EventHandler(this.tmrTickUpdate);
             // 
-            // txtPause
+            // lblSubtitle
             // 
-            this.txtPause.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.txtPause.AutoSize = true;
-            this.txtPause.Font = new System.Drawing.Font("Agency FB", 60F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtPause.ForeColor = System.Drawing.Color.White;
-            this.txtPause.Location = new System.Drawing.Point(515, 269);
-            this.txtPause.Name = "txtPause";
-            this.txtPause.Size = new System.Drawing.Size(219, 96);
-            this.txtPause.TabIndex = 8;
-            this.txtPause.Text = "Paused";
-            this.txtPause.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblSubtitle.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.lblSubtitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblSubtitle.Font = new System.Drawing.Font("Agency FB", 60F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblSubtitle.ForeColor = System.Drawing.Color.White;
+            this.lblSubtitle.Location = new System.Drawing.Point(2, 152);
+            this.lblSubtitle.Name = "lblSubtitle";
+            this.lblSubtitle.Size = new System.Drawing.Size(1260, 96);
+            this.lblSubtitle.TabIndex = 8;
+            this.lblSubtitle.Text = "Paused";
+            this.lblSubtitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // txtScore
+            // lblScore
             // 
-            this.txtScore.AutoSize = true;
-            this.txtScore.Font = new System.Drawing.Font("Agency FB", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtScore.ForeColor = System.Drawing.Color.White;
-            this.txtScore.Location = new System.Drawing.Point(12, 9);
-            this.txtScore.Name = "txtScore";
-            this.txtScore.Size = new System.Drawing.Size(84, 32);
-            this.txtScore.TabIndex = 9;
-            this.txtScore.Text = "Score: 0";
+            this.lblScore.AutoSize = true;
+            this.lblScore.BackColor = System.Drawing.Color.Transparent;
+            this.lblScore.Font = new System.Drawing.Font("Agency FB", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblScore.ForeColor = System.Drawing.Color.White;
+            this.lblScore.Location = new System.Drawing.Point(12, 9);
+            this.lblScore.Name = "lblScore";
+            this.lblScore.Size = new System.Drawing.Size(69, 26);
+            this.lblScore.TabIndex = 9;
+            this.lblScore.Text = "Score: 0";
             // 
             // btnExit
             // 
@@ -115,19 +119,57 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnExit_Click);
             // 
+            // lblLives
+            // 
+            this.lblLives.AutoSize = true;
+            this.lblLives.BackColor = System.Drawing.Color.Transparent;
+            this.lblLives.Font = new System.Drawing.Font("Agency FB", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblLives.ForeColor = System.Drawing.Color.White;
+            this.lblLives.Location = new System.Drawing.Point(12, 35);
+            this.lblLives.Name = "lblLives";
+            this.lblLives.Size = new System.Drawing.Size(61, 26);
+            this.lblLives.TabIndex = 12;
+            this.lblLives.Text = "Lives: 0";
+            // 
+            // lblLevel
+            // 
+            this.lblLevel.AutoSize = true;
+            this.lblLevel.BackColor = System.Drawing.Color.Transparent;
+            this.lblLevel.Font = new System.Drawing.Font("Agency FB", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblLevel.ForeColor = System.Drawing.Color.White;
+            this.lblLevel.Location = new System.Drawing.Point(12, 61);
+            this.lblLevel.Name = "lblLevel";
+            this.lblLevel.Size = new System.Drawing.Size(57, 26);
+            this.lblLevel.TabIndex = 13;
+            this.lblLevel.Text = "Level: 1";
+            // 
+            // btnMainMenu
+            // 
+            this.btnMainMenu.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnMainMenu.Location = new System.Drawing.Point(543, 261);
+            this.btnMainMenu.Name = "btnMainMenu";
+            this.btnMainMenu.Size = new System.Drawing.Size(161, 23);
+            this.btnMainMenu.TabIndex = 14;
+            this.btnMainMenu.Text = "Return to Menu";
+            this.btnMainMenu.UseVisualStyleBackColor = true;
+            this.btnMainMenu.Click += new System.EventHandler(this.btnMainMenu_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.btnMainMenu);
+            this.Controls.Add(this.lblLevel);
+            this.Controls.Add(this.lblLives);
             this.Controls.Add(this.btnExit);
-            this.Controls.Add(this.txtScore);
-            this.Controls.Add(this.txtPause);
+            this.Controls.Add(this.lblScore);
+            this.Controls.Add(this.lblSubtitle);
             this.Controls.Add(this.lblControls);
             this.Controls.Add(this.btnPlay);
-            this.Controls.Add(this.lblAsteroidsTitle);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Controls.Add(this.lblTitle);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -144,12 +186,15 @@
         #endregion
         GameEvent Event = new GameEvent();
         
-        private Label lblAsteroidsTitle;
+        private Label lblTitle;
         private Button btnPlay;
         private Label lblControls;
         private System.Windows.Forms.Timer tmrMovement;
-        private Label txtPause;
-        private Label txtScore;
+        private Label lblSubtitle;
+        private Label lblScore;
         private Button btnExit;
+        private Label lblLives;
+        private Label lblLevel;
+        private Button btnMainMenu;
     }
 }

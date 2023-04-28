@@ -10,11 +10,9 @@ namespace GunnarBabicz2263Pj8b
     internal class Asteroid : Entity
     {
         
-        public Asteroid(GameParameters gameSettings, int xFoo, int yFoo,
-            int radiusFoo, int deltaXFoo, int deltaYFoo,
-            Graphics gFoo) : base(gameSettings, xFoo, yFoo,
-            radiusFoo, deltaXFoo, deltaYFoo,
-            gFoo)
+        public Asteroid(GameParameters parameters, int xFoo, int yFoo,
+            int radiusFoo) : base(parameters, xFoo, yFoo,
+            radiusFoo)
         { }
 
         public override void drawThing()
@@ -31,9 +29,10 @@ namespace GunnarBabicz2263Pj8b
             updatePosition();
         }
 
-        public void testAsteroid()
+        public void simulateAsteroid()
         {
-            while(isAlive)
+            canCollide = true;
+            while(isAlive && (parameters.lives > 0))
             {
                 drawThing();
                 updatePosition();
@@ -42,5 +41,13 @@ namespace GunnarBabicz2263Pj8b
             eraseThing();
           
         }
+
+        public void levelBeginning() 
+        {
+            Thread.Sleep(1000);
+            simulateAsteroid();
+        }
+
+
     }
 }
