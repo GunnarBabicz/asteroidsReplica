@@ -12,6 +12,8 @@ namespace GunnarBabicz2263Pj8b
      * such as scoring, level, and number of lives. */
     internal class gameMaster
     {
+
+        private GameParameters param;
         internal int score = 0;
         private int level = 1;
         internal Asteroid[] spawnedAsteroids = new Asteroid[80];
@@ -34,6 +36,8 @@ namespace GunnarBabicz2263Pj8b
             get { return numberOfLasers; }
             set { numberOfLasers = value; }
         }
+
+
 
 
         public int canSpawnLaser() 

@@ -74,5 +74,77 @@ namespace GunnarBabicz2263Pj8b
         }
 
 
+
+        /* GAB 04/27/2023
+         * Check a list of entities and returns the first valid
+         * index in the array that a new entity can be added. If
+         * there is no valid place, the function will return -1
+         */
+        public static int firstValid(Entity[] arrayFoo)
+        {
+            for (int i = 0; i < arrayFoo.Length; i++)
+            {
+                if (entityIsReplaceable(arrayFoo[i])) { return i; }
+            }
+            return -1;
+        }
+
+
+        // 
+        public static bool entityIsReplaceable(Entity entityFoo) 
+        {
+            if (entityFoo != null)
+            { // if the entity is both not null and alive
+                if (entityFoo.isAlive == true) { return false; }
+            }
+            // if the entity is either null or dead
+            return true;
+        }
+
+
+        // if the entity is both not null and alive
+
+        // not calling directly from the entity to avoid a null pointer exception
+        // from a null entity
+        public static bool entityIsAlive(Entity entityFoo) 
+        {
+            if (entityFoo != null)
+            { // if the entity is both not null and alive
+                if (entityFoo.isAlive == true) { return true; }
+            }
+            // if the entity is either null or dead
+            return false;
+        }
+
+        /*
+         * Given a circular and point hitbox, returns a bool if the two collide. 
+         */
+        public static bool circlePointCollision(Entity circleFoo, Entity pointFoo)
+        {
+            Point foo = circleFoo.origin;
+            Point bar = pointFoo.origin;
+            if (circleFoo.radius > distanceBetween(foo, bar)) { return true; }
+            return false;
+        }
+
+
+        public static bool checkShipCollision(Ship player, Asteroid asteroid)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Point ast = asteroid.origin;
+                Point shp = player.pointList[i];
+                if (asteroid.radius > helpers.distanceBetween(ast, shp)) { return true; }
+            }
+            return false;
+        }
+
+
+
+
+
+
+
+
     }
 }

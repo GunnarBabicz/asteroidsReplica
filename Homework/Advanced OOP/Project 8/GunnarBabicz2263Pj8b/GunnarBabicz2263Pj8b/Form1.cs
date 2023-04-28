@@ -23,10 +23,9 @@ namespace GunnarBabicz2263Pj8b
         bool canFire = true;
 
         Ship player;
-        // game parameters
-        GameParameters gameSettingsFoo;
 
 
+        GameParameters parameters = new GameParameters();
         /* maybe give the objects an index? This could be used to
          * specifically despawn them if a list is the decided upon choice
          * to manage classes of entities. May just be able to despawn them
@@ -41,6 +40,9 @@ namespace GunnarBabicz2263Pj8b
          */
 
 
+
+        // Creates a Graphics object for the form
+        public Graphics newGraphics() { return CreateGraphics(); }
 
 
         /* GAB 04/07/2023
@@ -59,8 +61,15 @@ namespace GunnarBabicz2263Pj8b
             paused= true;
             txtPause.Hide();
             this.KeyPreview = true;
-            gameSettingsFoo = new GameParameters(this.Size.Width, this.Size.Height);
-            player = GameEvent.spawnShip(gameSettingsFoo, this.CreateGraphics());
+            parameters = new GameParameters(this.Size.Width, this.Size.Height);
+            parameters.loadForm(this);
+            // need to define the parameters for each class that will use them
+
+
+
+
+
+            player = GameEvent.spawnShip(parameters, this.CreateGraphics());
 
         }
 
@@ -68,6 +77,8 @@ namespace GunnarBabicz2263Pj8b
          *  Activates when the play button is pressed */
         private void btnPlay_Click(object sender, MouseEventArgs e)
         {
+            // Loads the current game parameters into the event manager
+            Event.loadParameters(parameters);
             // hides the menu buttons
             deactivateButton(btnPlay);
             lblAsteroidsTitle.Hide();
@@ -77,13 +88,13 @@ namespace GunnarBabicz2263Pj8b
             // telling KeyPress the game is being played
             inPlay = true;
             paused= false;
-            Event.newGame();
+
             
             
 
             for (int i = 0; i < 10; i++) 
             {
-                Event.spawnAsteroid(gameSettingsFoo, this.CreateGraphics());
+                Event.spawnRandomAsteroid(this.CreateGraphics());
             }
             
         }
@@ -185,7 +196,8 @@ namespace GunnarBabicz2263Pj8b
             if (paused == false) 
             { // if the game is paused. Will not currently work for asteroids
 
-                player = Event.checkShipCollision(player, gameSettingsFoo, this.CreateGraphics());
+
+                player = Event.checkCollision(player, this.CreateGraphics());
 
                 /* Player movement and actions */
                 if (left == true) { player.Rotate(10); }
@@ -193,7 +205,7 @@ namespace GunnarBabicz2263Pj8b
                 if (forward == true) { player.moveForward(); }
                 if ((shoot == true) && (canFire == true))
                 {
-                    Event.fireLaser(gameSettingsFoo, CreateGraphics(), player);
+                    Event.fireLaser(CreateGraphics(), player);
 
                     /* disables the laser from firing again and
                      * creates a thread for its timer */
@@ -202,13 +214,13 @@ namespace GunnarBabicz2263Pj8b
                     laserBuffer.Start();
                 }
 
-                /* Asteroid Movements */
-                Event.checkCollision();
+
                 /* Testing for collisions */
 
                 player.updatePosition();
 
-                txtScore.Text = ($"Score: {Event.Score}");
+                // updating the score
+                txtScore.Text = ($"Score: {parameters}");
 
             }
         }

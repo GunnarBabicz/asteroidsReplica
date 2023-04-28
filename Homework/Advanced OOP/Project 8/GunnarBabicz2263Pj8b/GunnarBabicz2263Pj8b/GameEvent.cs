@@ -14,14 +14,21 @@ namespace GunnarBabicz2263Pj8b
     internal class GameEvent
     {
 
-        private GameParameters parameters;
-
-        gameMaster Zeus;
+        private GameParameters para;
         Random random = new Random();
+
+
+
+        public void gameStart(GameParameters foo) 
+        {
+            para= foo;
+        }
+
+
 
         /* GAB 04/07/2023
          *  Creates a new Ship object in the center of the screen */
-        public static Ship spawnShip(GameParameters gameSettingsFoo, Graphics g) 
+        public static Ship spawnShip(GameParameters gameSettingsFoo) 
         {   // known bug: Will not support odd numbered screen sizes.
             int centerWidth = gameSettingsFoo.ResolutionHeight / 2;
             int centerHeight = gameSettingsFoo.ResolutionWidth / 2;
@@ -29,36 +36,32 @@ namespace GunnarBabicz2263Pj8b
         }
 
 
-        public void newGame() 
-        {
-            Zeus = new gameMaster();
-        }
+        public void loadParameters(GameParameters foo) { para = foo; }
 
         public int Score 
         {
-            get { return Zeus.score; }
+            get { return para.score; }
         }
 
         /*GAB 04/06/2023
          * Spawns an asteroid with random size, location, and velocity.
          * Work in progress. */
-        public void spawnAsteroid(GameParameters gameSettingsFoo, Graphics g) 
+        public void spawnRandomAsteroid(Graphics g) 
         { // spawns a astroid with random values
 
-            int index = Zeus.canSpawnAsteroid();
+            int index = helpers.firstValid(para.spawnedAsteroids);
             if (index >= 0)
             { /* spawns an asteroid with random size, location, and speed if spawn cap
                * has not been reached */
-                int xPos = random.Next(0, gameSettingsFoo.ResolutionWidth);
-                int yPos = random.Next(0, gameSettingsFoo.ResolutionHeight);
+                int xPos = random.Next(0, para.ResolutionWidth);
+                int yPos = random.Next(0, para.ResolutionHeight);
                 int radius = random.Next(30, 80);
-                Asteroid asteroid = new Asteroid(gameSettingsFoo,
+                Asteroid asteroid = new Asteroid(para,
                     xPos, yPos, radius, 0, 0, g);
                 asteroid.Angle = random.Next(0, 35) * 10;
                 asteroid.speed = random.Next(5, 12);
 
-                Zeus.spawnedAsteroids[index] = asteroid;
-                Zeus.NumberOfAsteroids++;
+                para.spawnedAsteroids[index] = asteroid;
 
                 Thread asteroidThread = new Thread(asteroid.testAsteroid);
                 asteroidThread.Start();
@@ -66,110 +69,74 @@ namespace GunnarBabicz2263Pj8b
         }
 
 
-
-        /* GAB 04/07/2023
-         *  If the player is hit by an asteroid */
-        public void shipHit()
-        {
-            // if(shipLives > 0) respawn
-            // else{ gameOver()}
-        }
-
         /* GAB 04/07/2023
          *  Creates a new Laser object */
-        public void fireLaser(GameParameters gameSettingsFoo, Graphics g, Ship vessel)
+        public void fireLaser(Graphics g, Ship vessel)
         {
-            int index = Zeus.canSpawnLaser();
-            if (index >= 0) 
-            {
-                Laser laser = new Laser(gameSettingsFoo,
+            int i = helpers.firstValid(para.spawnedLasers);
+            if (i >= 0) 
+            { // if a laser is able to be spawned
+                Laser laser = new Laser(para,
                 vessel.yPos, vessel.xPos, 5, 0, 0, g);
                 laser.Angle = vessel.Angle;
                 laser.Speed = 40;
 
-                Zeus.spawnedLasers[index] = laser;
-                Zeus.NumberOfLasers++;
-
+                para.addLaser(i, laser);
                 Thread laserThread = new Thread(laser.simulateLaser);
                 laserThread.Start();
                 // starts the threads
             }
         }
 
-        public void checkHits() 
+        public void checkHits()
         {
-            int asteroidsChecked = 0;
-            int asteroidsAlive = Zeus.NumberOfAsteroids;
-
-            while (asteroidsChecked < asteroidsAlive) 
-            {
-                for (int i = 0; i < Zeus.spawnedAsteroids.Length; i++)
-                {
-                    if (Zeus.spawnedAsteroids[i] != null)
-                    {
-                        if (Zeus.spawnedAsteroids[i].isAlive == true)
-                        {
-                            asteroidsChecked++;
-                            for (int j = 0; j < Zeus.spawnedLasers.Length; j++)
-                            {
-                                if (Zeus.spawnedLasers[j] != null)
-                                {
-                                    if (Zeus.spawnedLasers[j].isAlive == true)
-                                    {
-                                        Point ast = Zeus.spawnedAsteroids[i].origin;
-                                        Point las = Zeus.spawnedLasers[j].origin;
-                                        
-                                        if (Zeus.spawnedAsteroids[i].radius > helpers.distanceBetween(ast, las))
-                                        {
-                                            Zeus.spawnedAsteroids[i].Hit();
-                                            Zeus.spawnedLasers[j].Hit();
-                                            Zeus.asteroidHit();
-                                        }
-                                    }
-                                }
+            for (int i = 0; i < para.spawnedAsteroids.Length; i++)
+            { // for each asteroid in the array
+                if (helpers.entityIsAlive(para.spawnedAsteroids[i]))
+                { // if the asteroid should be checked
+                    for (int j = 0; j < para.spawnedLasers.Length; j++)
+                    { // for each laser in the array
+                        if (helpers.entityIsAlive(para.spawnedLasers[j]))
+                        { // if the laser should be checked
+                            if (helpers.circlePointCollision(para.spawnedAsteroids[i], para.spawnedLasers[j]))
+                            { // if the two collided
+                                laserHit(i, j);
                             }
                         }
                     }
                 }
-            }       
+            }
         }
 
 
-        public void checkCollision() 
-        {
-            if (Zeus.NumberOfLasers > 0) { checkHits(); }
+
+        private void laserHit(int asteroidIndex, int laserIndex)
+        { // if a laser and asteroid collide
+            para.removeAsteroid(asteroidIndex);
+            para.removeLaser(laserIndex);
         }
 
 
-        public Ship checkShipCollision(Ship player, GameParameters gameSettingsFoo, Graphics g) 
-        {
-            int asteroidsChecked = 0;
-            int asteroidsAlive = Zeus.NumberOfAsteroids;
 
-            while (asteroidsChecked < asteroidsAlive) 
-            {
-                for (int i = 0; i < Zeus.spawnedAsteroids.Length; i++) 
-                {
-                    if (Zeus.spawnedAsteroids[i] != null) 
+
+
+        public Ship checkCollision(Ship player, Graphics g) 
+        {
+            if (para.numberOfLasers > 0) { checkHits(); }
+            return checkShipCollision(player, g);
+        }
+
+
+        private Ship checkShipCollision(Ship player, Graphics g) 
+        {
+
+            for (int i = 0; i < para.spawnedAsteroids.Length; i++)
+            { // for each asteroid in the array
+                if (helpers.entityIsAlive(para.spawnedAsteroids[i])) 
+                { // if the asteroid should be checked
+                    if (helpers.checkShipCollision(player, para.spawnedAsteroids[i]))
                     {
-                        if (Zeus.spawnedAsteroids[i].isAlive == true) 
-                        {
-                            asteroidsChecked++;
-                            for (int j = 0; j < 3; j++) 
-                            {
-                                Point ast = Zeus.spawnedAsteroids[i].origin;
-                                Point shp = player.pointList[j];
-
-                                if (Zeus.spawnedAsteroids[i].radius > helpers.distanceBetween(ast, shp)) 
-                                {
-                                    player.eraseThing();
-                                    Thread.Sleep(1000);
-                                    Ship newPlayer = spawnShip(gameSettingsFoo, g);
-                                    newPlayer.drawThing();
-                                    return newPlayer;
-                                }
-                            }
-                        }
+                        return (playerHit(player, g));
                     }
                 }
             }
@@ -177,11 +144,18 @@ namespace GunnarBabicz2263Pj8b
         }
 
 
-
+        // if the player is hit
+        private Ship playerHit(Ship player, Graphics g) 
+        {
+            player.eraseThing();
+            Thread.Sleep(1000);
+            Ship newPlayer = spawnShip(para);
+            newPlayer.drawThing();
+            return newPlayer;
+        }
+    
 
 
     }
-
-    
 
 }

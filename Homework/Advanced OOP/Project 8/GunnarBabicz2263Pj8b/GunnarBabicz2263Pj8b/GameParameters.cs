@@ -13,6 +13,10 @@ namespace GunnarBabicz2263Pj8b
     public class GameParameters
     {
         // class variables 
+        
+        // instance of the form 1 object (used to make new Graphics objects)
+
+        public Form1 f1;
 
         // resolution of the window
         private int resolutionHeight;
@@ -26,7 +30,9 @@ namespace GunnarBabicz2263Pj8b
 
         // gameplay variables (player viewable)
         internal int score = 0;
-        private int level = 1;
+        internal int level = 1;
+        internal int lives = 3;
+
 
         // instance of the player
         internal Ship player;
@@ -35,8 +41,8 @@ namespace GunnarBabicz2263Pj8b
         // internal variables (not viewable)
         internal Asteroid[] spawnedAsteroids = new Asteroid[80];
         internal Laser[] spawnedLasers = new Laser[4];
-        private int numberOfAsteroids = 0;
-        private int numberOfLasers = 0;
+        internal int numberOfAsteroids = 0;
+        internal int numberOfLasers = 0;
 
 
 
@@ -50,22 +56,24 @@ namespace GunnarBabicz2263Pj8b
 
 
         /* GAB 04/07/2023
-         *  Constructor if a resolution other than the standard 1080p is chosen */
+         *  Constructor if a resolution other than the standard 720p is chosen */
         public GameParameters(int resolutionWidthFoo, int resolutionHeightFoo)
         {
             resolutionWidth = resolutionWidthFoo;
             resolutionHeight = resolutionHeightFoo;
         }
 
-        // Constructor with the default resolution of 1080p
+        // Constructor with the default resolution of 720p
         public GameParameters()
         {
-            resolutionWidth = 1920;
-            resolutionHeight = 1080;
+            resolutionWidth = 1280;
+            resolutionHeight = 720;
         }
 
 
         // getter and setter methods
+
+        public void loadForm(Form1 foo) { f1 = foo; }
 
 
         /* GAB 04/07/2023
@@ -108,13 +116,31 @@ namespace GunnarBabicz2263Pj8b
             set { penWidth = value; }
         }
 
-        public void addAsteroid() { numberOfAsteroids++; }
 
-        public void removeAsteroid() { numberOfAsteroids--; }
 
-        public void addLaser() { numberOfLasers++; }
+        internal void addAsteroid(int i, Asteroid Foo) 
+        {
+            spawnedAsteroids[i] = Foo;
+            numberOfAsteroids++;
+        }
 
-        public void removeLaser() { numberOfLasers--; }
+        public void removeAsteroid(int i) 
+        {
+            spawnedAsteroids[i].isAlive = false;
+            numberOfAsteroids--; 
+        }
+
+        internal void addLaser(int i, Laser Foo) 
+        {
+            spawnedLasers[i] = Foo;
+            numberOfLasers++; 
+        }
+
+        public void removeLaser(int i) 
+        {
+            spawnedLasers[i].isAlive = false;
+            numberOfLasers--; 
+        }
 
     }
 }

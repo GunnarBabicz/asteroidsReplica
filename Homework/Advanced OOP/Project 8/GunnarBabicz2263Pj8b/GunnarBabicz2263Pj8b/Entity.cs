@@ -16,7 +16,7 @@ namespace GunnarBabicz2263Pj8b
         // Initial variables
 
         // 
-        private GameParameters Parameters;
+        private GameParameters parameters;
 
         public bool isAlive;
         internal Graphics g;
@@ -24,7 +24,6 @@ namespace GunnarBabicz2263Pj8b
         internal Pen p;
         int penWidth;
         public int x, y, radius, deltaX, deltaY;
-        int xDir, yDir;
         Color backgroundColor;
         Color entityColor;
         internal int resolutionWidth, resolutionHeight;
@@ -40,20 +39,20 @@ namespace GunnarBabicz2263Pj8b
 
         /* GAB 04/07/2023
          *  Constructor */
-        public Entity(GameParameters gameSettings, int xFoo, int yFoo,
+        public Entity(GameParameters parametersFoo, int xFoo, int yFoo,
             int radiusFoo, int deltaXFoo, int deltaYFoo,
             Graphics gFoo)
         {
-
+            parameters = parametersFoo;
             // Screen resolution
-            resolutionWidth = gameSettings.ResolutionWidth;
-            resolutionHeight = gameSettings.ResolutionHeight;
+            resolutionWidth = parametersFoo.ResolutionWidth;
+            resolutionHeight = parametersFoo.ResolutionHeight;
 
 
             // entity colors and creation tools
-            entityColor = gameSettings.EntityColor;
-            backgroundColor = gameSettings.BackgroundColor;
-            penWidth = gameSettings.PenWidth;
+            entityColor = parametersFoo.EntityColor;
+            backgroundColor = parametersFoo.BackgroundColor;
+            penWidth = parametersFoo.PenWidth;
             g = gFoo;
             p = new Pen(entityColor, penWidth);
             eraser = new Pen(backgroundColor, penWidth);
@@ -65,8 +64,6 @@ namespace GunnarBabicz2263Pj8b
             center = new Point (origin.X - radius, origin.Y - radius);
             radius = radiusFoo;
             deltaX = deltaXFoo; deltaY = deltaYFoo;
-            xDir = 1;
-            yDir = 1;
             isAlive= true;
         }
 
