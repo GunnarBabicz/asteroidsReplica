@@ -65,7 +65,7 @@ namespace GunnarBabicz2263Pj8b
                 int yPos = (para.Height + (random.Next(para.scale*3, para.Height/2)*positiveOrNegative));
 
 
-                int radius = random.Next(1, 4) * (para.scale-10);
+                int radius = random.Next(2, 4) * (para.scale-10);
                 Asteroid asteroid = new Asteroid(para,
                     xPos, yPos, radius);
                 asteroid.Angle = random.Next(0, 35) * 10;
@@ -169,7 +169,9 @@ namespace GunnarBabicz2263Pj8b
             player.eraseThing();
             Thread.Sleep(1000);
             Ship newPlayer = spawnShip(para);
-            while (helpers.closestAsteroid(newPlayer, para) < (newPlayer.radius * 6)) { Thread.Sleep(20); }
+
+            // keeps the player from spawning inside an asteroid
+            while (helpers.closestAsteroid(newPlayer, para) < (newPlayer.radius * 4)) { Thread.Sleep(20); }
             para.lives--;
             return newPlayer;
         }
@@ -202,7 +204,7 @@ namespace GunnarBabicz2263Pj8b
 
         internal void nextLevel() 
         { // generates the asteroids for each level. Gets progressively harder.
-            for (int i = 0; i < 20; i++) 
+            for (int i = 0; i < para.level + 5; i++) 
             {
                 spawnRandomAsteroid();
             }

@@ -25,7 +25,7 @@ namespace GunnarBabicz2263Pj8b
         int penWidth;
         public int x, y, radius, deltaX = 0, deltaY = 0;
         Color backgroundColor;
-        Color entityColor;
+        internal Color entityColor;
         internal int resolutionWidth, resolutionHeight;
         internal int angle = 0;
         internal int speed = 0;

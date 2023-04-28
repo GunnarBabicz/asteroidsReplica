@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GunnarBabicz2263Pj8b
+﻿namespace GunnarBabicz2263Pj8b
 {
     internal class Ship : Entity
     {
+        Point left;
+        Point right;
+
+        Point leftRear;
+        Point rightRear;
         // makes the engine flicker (visible every other frame)
         bool exhaustStagger = true;
         bool exhaustDrawn = false;
@@ -83,18 +82,17 @@ namespace GunnarBabicz2263Pj8b
 
         private void exhaustLines(Pen penFoo) 
         {
-            Point a = helpers.findMidpoint(pointList[0], origin);
-            Point b = helpers.findMidpoint(pointList[1], origin);
-            Point c = helpers.findMidpoint(pointList[0], pointList[1]);
+            Point leftExhaust = helpers.fractionOfDistanceFrom(leftRear, rightRear, 5);
+            Point rightExhaust = helpers.fractionOfDistanceFrom(rightRear, leftRear, 5);
+            Point exhaustTip = helpers.findMidpoint(pointList[0], pointList[1]);
 
-            Point d = new Point(origin.X - c.X, origin.Y - c.Y);
-            d.X = d.X * -1; d.Y= d.Y * -1;
-            c.X = c.X + d.X; c.Y = c.Y + d.Y;
-
+            Point totalChange = helpers.coordinateChangesFrom(origin, exhaustTip);
+            exhaustTip.X += totalChange.X; exhaustTip.Y += totalChange.Y;
 
 
-            g.DrawLine(penFoo, a, c);
-            g.DrawLine(penFoo, b, c);
+
+            g.DrawLine(penFoo, leftExhaust, exhaustTip);
+            g.DrawLine(penFoo, rightExhaust, exhaustTip);
         }
 
         private void drawExhaust() { exhaustLines(p); }
@@ -106,11 +104,31 @@ namespace GunnarBabicz2263Pj8b
          */
         public override void drawLines(int numPoints, Pen penFoo)
         {// specifically for the spaceship
+            //pointList[2]: tip of the ship
+            //pointList[1]: left 
+            //pointList[0]: right
 
-            g.DrawLine(penFoo, pointList[0], origin);
-            g.DrawLine(penFoo, origin, pointList[1]);
-            g.DrawLine(penFoo, pointList[1], pointList[2]);
-            g.DrawLine(penFoo, pointList[2], pointList[0]);
+            left = helpers.fractionOfDistanceFrom(pointList[1], pointList[0], 5);
+            right = helpers.fractionOfDistanceFrom(pointList[0], pointList[1], 5);
+
+            //g.DrawLine(penFoo, left, pointList[1]);
+            //g.DrawLine(penFoo, right, pointList[0]);
+
+
+            // old inwards triangle
+            //g.DrawLine(penFoo, pointList[0], origin);
+            //g.DrawLine(penFoo, origin, pointList[1]);
+
+            g.DrawLine(penFoo, left, pointList[2]);
+            g.DrawLine(penFoo, right, pointList[2]);
+
+            //g.DrawLine(penFoo, pointList[1], pointList[2]);
+            //g.DrawLine(penFoo, pointList[2], pointList[0]);
+
+            leftRear = helpers.fractionOfDistanceFrom(left, pointList[2], 5);
+            rightRear = helpers.fractionOfDistanceFrom(right, pointList[2], 5);
+
+            g.DrawLine(penFoo, leftRear, rightRear);
 
 
             // drawing circle inside for testing

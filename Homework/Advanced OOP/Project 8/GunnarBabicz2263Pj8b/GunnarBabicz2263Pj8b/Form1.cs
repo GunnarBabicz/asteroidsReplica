@@ -21,7 +21,7 @@ namespace GunnarBabicz2263Pj8b
 
         // keeps the player from spamming lasers
         bool canFire = true;
-        bool waitIsOver = false;
+        bool inPlay = false;
 
         Ship player;
 
@@ -78,6 +78,9 @@ namespace GunnarBabicz2263Pj8b
          *  Activates when the play button is pressed */
         private void btnPlay_Click(object sender, MouseEventArgs e)
         {
+            inPlay = true;
+
+
             // Loads the current game parameters into the event manager
             Event.gameStart(parameters);
             // hides the menu buttons
@@ -103,58 +106,52 @@ namespace GunnarBabicz2263Pj8b
          */
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (parameters.lives > 0 && (player.canCollide))
-            { // will only run if game is currently being played
-                if (e.KeyCode == Keys.A)
-                { // to rotate left
-                    left = true;
-                }
-                if (e.KeyCode == Keys.D)
-                { // to rotate right
-                    right = true;
-                }
+            if (e.KeyCode == Keys.A)
+            { // to rotate left
+                left = true;
+            }
+            if (e.KeyCode == Keys.D)
+            { // to rotate right
+                right = true;
+            }
 
-                if (e.KeyCode == Keys.W)
-                { // to move forward
-                    forward = true;
-                }
+            if (e.KeyCode == Keys.W)
+            { // to move forward
+                forward = true;
+            }
 
-                if (e.KeyCode == Keys.Space)
-                { // to fire laser
-                    shoot = true;
-                }
+            if (e.KeyCode == Keys.Space)
+            { // to fire laser
+                shoot = true;
             }
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             {
-                if (parameters.lives > 0 && player.canCollide)
-                { // will only run if game is currently being played
-                    if (e.KeyCode == Keys.A)
-                    { // to rotate left
-                        left = false;
-                    }
+                if (e.KeyCode == Keys.A)
+                { // to rotate left
+                    left = false;
+                }
 
-                    if (e.KeyCode == Keys.D)
-                    { // to rotate right
-                        right = false;
-                    }
+                if (e.KeyCode == Keys.D)
+                { // to rotate right
+                    right = false;
+                }
 
-                    if (e.KeyCode == Keys.W)
-                    { // to move forward
-                        forward = false;
-                    }
+                if (e.KeyCode == Keys.W)
+                { // to move forward
+                    forward = false;
+                }
 
-                    if (e.KeyCode == Keys.Space)
-                    { // to fire laser
-                        shoot = false;
-                    }
+                if (e.KeyCode == Keys.Space)
+                { // to fire laser
+                    shoot = false;
+                }
 
-                    if (e.KeyCode == Keys.P)
-                    { // pause menu
+                if (e.KeyCode == Keys.P)
+                { // pause menu
 
-                    }
                 }
             }
         }
@@ -169,13 +166,15 @@ namespace GunnarBabicz2263Pj8b
 
             if (parameters.lives > 0)
             { // if the game is paused. Will not currently work for asteroids
-
-                
                 player = Event.checkCollision(player, this.CreateGraphics());
+            }
+
+
+            if (parameters.lives > 0) 
+            {
                 player.drawThing();
                 player.canCollide = true;
 
-                /* Player movement and actions */
                 if (left == true) { player.Rotate(10); }
                 if (right == true) { player.Rotate(-10); }
                 if (forward == true) { player.moveForward(); }
@@ -190,28 +189,25 @@ namespace GunnarBabicz2263Pj8b
                     laserBuffer.Start();
                 }
 
-
-                /* Testing for collisions */
-
                 player.updatePosition();
+            }
+
+
 
                 // updating the score
-                lblScore.Text = ($"Score: {parameters.score}");
-                lblLives.Text = ($"Lives:{parameters.lives}");
-                lblLevel.Text = ($"Level: {parameters.level}");
+            lblScore.Text = ($"Score: {parameters.score}");
+            lblLives.Text = ($"Lives:{parameters.lives}");
+            lblLevel.Text = ($"Level: {parameters.level}");
 
 
-                if ((parameters.numberOfAsteroids == 0))
-                {
-                    parameters.level++;
-                    Event.nextLevel();
-                }
-
-
+           if (parameters.numberOfAsteroids == 0 && inPlay)
+            {
+                parameters.level++;
+                Event.nextLevel();
             }
+
             else if ((parameters.lives < 1) && (parameters.level > 0)) 
             {
-                player.eraseThing();
                 gameOver();
             }
         }
@@ -267,7 +263,7 @@ namespace GunnarBabicz2263Pj8b
 
         private void gameOver() 
         {
-
+            inPlay = false;
             lblLives.Hide();
             lblScore.Hide();
             lblLevel.Hide();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,6 +73,26 @@ namespace GunnarBabicz2263Pj8b
         {
             return new Point(((a.X + b.X) / 2), ((a.Y + b.Y) / 2));
         }
+
+
+
+        /* Finds the point 1 / denominator of the way between point A and point B.
+         * For example, 3 would be the point 1/3 of the way from A to B.
+         */ 
+        public static Point fractionOfDistanceFrom(Point a, Point b, int denominator) 
+        {
+            int deltaX = (b.X - a.X);
+            int deltaY = (b.Y - a.Y);
+            double rawX = (a.X + (deltaX / 5));
+            double rawY = (a.Y + (deltaY / 5));
+
+            int roundedX = (int)Math.Round(rawX);
+            int roundedY = (int)Math.Round(rawY);
+
+            return new Point(roundedX, roundedY);
+        }
+
+
 
 
 
@@ -161,6 +182,12 @@ namespace GunnarBabicz2263Pj8b
                 }
             }
             return closestDistance;
+        }
+
+
+        public static Point coordinateChangesFrom(Point a, Point b) 
+        {
+            return new Point(b.X - a.X, b.Y - a.Y);
         }
 
 
