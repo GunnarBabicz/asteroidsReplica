@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 
 namespace GunnarBabicz2263Pj8b
 {
@@ -14,18 +15,20 @@ namespace GunnarBabicz2263Pj8b
     internal class Entity
     {
         // Initial variables
-
-        // 
         internal GameParameters parameters;
         internal bool canCollide = false;
         public bool isAlive;
+
+        // variables for drawing of the entity
         internal Graphics g;
         internal Pen eraser;
         internal Pen p;
-        int penWidth;
-        public int x, y, radius, deltaX = 0, deltaY = 0;
-        Color backgroundColor;
+        internal int penWidth;
+        internal Color backgroundColor;
         internal Color entityColor;
+        
+        // physical variables
+        public int x, y, radius, deltaX = 0, deltaY = 0;
         internal int resolutionWidth, resolutionHeight;
         internal int angle = 0;
         internal int speed = 0;
@@ -33,9 +36,11 @@ namespace GunnarBabicz2263Pj8b
         internal int acceleration = 0;
         internal Point origin;
         public Point center;
+
+        // variables for calculations
         internal Point result = new Point(0, 0);
         internal List<Point> pointList = new List<Point>();
-
+        
 
         /* GAB 04/07/2023
          *  Constructor */
@@ -136,7 +141,7 @@ namespace GunnarBabicz2263Pj8b
         public void drawVectorShape(int numPoints, Pen pls)
         {
             findPoints(numPoints, radius);
-            drawLines(numPoints, pls);
+            drawShape(numPoints, pls);
         }
 
 
@@ -145,10 +150,7 @@ namespace GunnarBabicz2263Pj8b
          *  of a n sided object relative to the origin
          *  and if the object is already at an angle.
          *  
-         *  
-         *  
-         *  Adapted from note 8.0.
-         */
+         *  Adapted from note 8.0. */
         public double findAngle(int iterationNum, int numPoints) 
         {
             int degreesBetweenPoints = (360 / numPoints);
@@ -159,15 +161,12 @@ namespace GunnarBabicz2263Pj8b
             
         }
 
-
         /* GAB 04/07/2023
          *  For a shape of n sides,
          *  finds the coordinates of where its points
          *  would be on a circle of radius r.
          *  
-         *  
-         *  Adapted from note 8.0
-         */
+         *  Adapted from note 8.0 */
         public void findPoints(int numSides, int radiusFoo)
         {
             pointList.Clear(); 
@@ -183,34 +182,19 @@ namespace GunnarBabicz2263Pj8b
         }
 
         /* GAB 04/06/2023
-         * Creates a polygonal shape
-         */
-        public virtual void drawLines(int numPoints, Pen p)
+         * Creates a polygonal shape */
+        public virtual void drawShape(int numPoints, Pen p)
         {// specifically for the spaceship
-            for (int i = 0; i < numPoints; i++) 
-            {
-                if (i+1 < numPoints)
-                { // if i is not on its last point
-                    g.DrawLine(p, pointList[i], pointList[i+1]);
-                }
-                else 
-                {
-                    g.DrawLine(p, pointList[numPoints-1], pointList[0]);
-                }
-            
-            }
-        }
 
+        }
 
         /* GAB 04/07/2023
          *  Changes the origin of the entity based on its current movement.
-            Adapted from Note 8.4 */
+         *  Adapted from Note 8.4 */
         internal virtual void updatePosition() 
-        { // only max speed for now, will eventually make speed increase incrementially
+        {
             
             eraseThing();
-
-            
             findPoints(1, speed);
             origin = pointList[0];
 
@@ -218,26 +202,11 @@ namespace GunnarBabicz2263Pj8b
             if (radius + origin.X < 0) origin.X = resolutionWidth;
 
             if (radius + origin.Y < 0 ) origin.Y = resolutionHeight;
-            if ( origin.Y > resolutionHeight + radius) origin.Y = 0;
+            if ( origin.Y > resolutionHeight + radius - 30) origin.Y = 0;
 
             center = new Point (origin.X - radius, origin.Y - radius);
             acceleration = 0;
             drawThing();
         }
-
-
-        /* Big Challenges:
-         * 1. How to detect collision
-         * 2. How to properly use threading 
-         *    to simulate multiple graphics object
-         * 3. How to rotate the ship while still having it properly rendered
-         
-         */
-
-
-
-
-
-
     }
 }

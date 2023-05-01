@@ -6,28 +6,29 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Media;
 
 namespace GunnarBabicz2263Pj8b
 {
     /* GAB 04/05/2023
-     * Event is a class to handle events such as spawning
-     * Will likely split into smaller classes
-     */
+     * GameEvent is a class to handle cases such as spawning entities and checking for hits*/
     internal class GameEvent
     {
-
+        // Directory for sound files used
+        SoundPlayer laserSound = new SoundPlayer(@"..\..\..\sounds\shoot.wav");
+        SoundPlayer asteroidHitSound = new SoundPlayer(@"..\..\..\sounds\asteroidHit.wav");
+        SoundPlayer shipKilled = new SoundPlayer(@"..\..\..\sounds\shipKilled.wav");
         private GameParameters para;
         Random random = new Random();
 
-        // The entities are made smaller or larger based on the resolution
-
+        /* GAB 04/30/2023
+        * Run on game start to reset game stats */
         public void gameStart(GameParameters foo) 
         {
             para = foo;
             para.lives = 3;
+            para.score = 0;
         }
-
-
 
         /* GAB 04/07/2023
          *  Creates a new Ship object in the center of the screen */
@@ -38,15 +39,7 @@ namespace GunnarBabicz2263Pj8b
             return new Ship(gameSettingsFoo, centerWidth, centerHeight, gameSettingsFoo.scale);
         }
 
-
-        public void loadParameters(GameParameters foo) { para = foo; }
-
-        public int Score 
-        {
-            get { return para.score; }
-        }
-
-        /*GAB 04/06/2023
+        /* GAB 04/06/2023
          * Spawns an asteroid with random size, location, and velocity.
          * Work in progress. */
         public void spawnRandomAsteroid() 
@@ -62,10 +55,10 @@ namespace GunnarBabicz2263Pj8b
                 if (positiveOrNegative == 0) { positiveOrNegative = 1; }
                 else { positiveOrNegative = -1; }
                 int xPos = (para.Width/2 + (random.Next(para.scale*3, para.Width/2)*positiveOrNegative));
-                int yPos = (para.Height + (random.Next(para.scale*3, para.Height/2)*positiveOrNegative));
+                int yPos = (para.Height/2 + (random.Next(para.scale*3, para.Height/2)*positiveOrNegative));
 
 
-                int radius = random.Next(2, 4) * (para.scale-10);
+                int radius = 3 * para.asteroidScale;
                 Asteroid asteroid = new Asteroid(para,
                     xPos, yPos, radius);
                 asteroid.Angle = random.Next(0, 35) * 10;
@@ -78,7 +71,6 @@ namespace GunnarBabicz2263Pj8b
             }
         }
 
-
         /* GAB 04/07/2023
          *  Creates a new Laser object */
         public void fireLaser(Graphics g, Ship vessel)
@@ -90,7 +82,7 @@ namespace GunnarBabicz2263Pj8b
                 vessel.xPos, vessel.yPos, 5);
                 laser.Angle = vessel.Angle;
                 laser.Speed = 50;
-
+                laserSound.Play();
                 para.addLaser(i, laser);
                 Thread laserThread = new Thread(laser.simulateLaser);
                 laserThread.Start();
@@ -98,7 +90,17 @@ namespace GunnarBabicz2263Pj8b
             }
         }
 
-        public void checkHits()
+        /* GAB 04/30/2023
+        * Checks for ship and laser collisions */
+        public Ship checkCollision(Ship player, Graphics g)
+        {
+            if (para.numberOfLasers > 0) { checkAsteroidCollision(); }
+            return checkShipCollision(player, g);
+        }
+
+        /* GAB 04/30/2023
+        * Checks for collisions between any lasers and asteroids */
+        public void checkAsteroidCollision()
         {
             for (int i = 0; i < para.spawnedAsteroids.Length; i++)
             { // for each asteroid in the array
@@ -112,12 +114,12 @@ namespace GunnarBabicz2263Pj8b
                             Laser lsr = para.spawnedLasers[j];
                             if (helpers.circlePointCollision(astrd, lsr))
                             { // if the two collided
-                                para.score += 100;
-                                if(astrd.radius > (para.scale - 10)) 
+                                para.score += determineScore(astrd);
+                                asteroidHitSound.Play();
+                                if(astrd.radius >= para.asteroidScale*2) 
                                 {
                                     asteroidSplit(astrd);
                                 }
-                                
                                 laserHit(i, j);
                             }
                         }
@@ -126,34 +128,69 @@ namespace GunnarBabicz2263Pj8b
             }
         }
 
+        /* GAB 04/30/2023
+        * Splits a larger asteroid into two smaller asteroids */
+        private void asteroidSplit(Asteroid ast)
+        {
+            int multiplier = 1;
+
+            for (int i = 0; i < 2; i++)
+            {
+                int index = helpers.firstValid(para.spawnedAsteroids);
+                if (index >= 0)
+                { // if the spawn cap for asteroids has not been reached
+
+                    Asteroid asteroid = new Asteroid(para, ast.origin.X, ast.origin.Y, ast.radius - para.asteroidScale);
+
+                    // adds a new random angle
+                    int angleChange = (random.Next(-180, 181));
+                    asteroid.Angle = (ast.angle + (random.Next(0, 360)));
+                    while (asteroid.Angle > 359) { asteroid.Angle -= 360; }
+                    while (asteroid.Angle < 0) { asteroid.Angle += 360; }
 
 
+
+                    // either adds or reduces speed from asteroid
+                    asteroid.Speed = ast.speed + getNewSpeed(angleChange);
+
+                    // keep the asteroid at a minimum speed of 2
+                    while (asteroid.speed < 2) { asteroid.speed++; }
+
+                    para.addAsteroid(index, asteroid);
+                    Thread asteroidThread = new Thread(asteroid.simulateAsteroid);
+                    asteroidThread.Start();
+                }
+            }
+        }
+
+        /* GAB 04/30/2023
+        * If a laser hits an asteroid */
         private void laserHit(int asteroidIndex, int laserIndex)
         { // if a laser and asteroid collide
             para.removeAsteroid(asteroidIndex);
             para.removeLaser(laserIndex);
         }
 
-
-
-
-
-        public Ship checkCollision(Ship player, Graphics g) 
+        /* GAB 04/30/2023
+        * Adds to player score based on the size of the asteroid */
+        public int determineScore(Asteroid foo)
         {
-            if (para.numberOfLasers > 0) { checkHits(); }
-            return checkShipCollision(player, g);
+            if (foo.radius == (para.asteroidScale * 3)) { return 20; }
+            if (foo.radius == (para.asteroidScale * 2)) { return 50; }
+            return 100;
         }
 
-
+        /* GAB 04/30/2023
+        * Checks if the player has been hit by any asteroids */
         private Ship checkShipCollision(Ship player, Graphics g) 
         {
-
             for (int i = 0; i < para.spawnedAsteroids.Length; i++)
             { // for each asteroid in the array
                 if (helpers.entityIsAlive(para.spawnedAsteroids[i])) 
                 { // if the asteroid should be checked
                     if (helpers.checkShipCollision(player, para.spawnedAsteroids[i]))
                     {
+                        shipKilled.Play();
                         return (playerHit(player));
                     }
                 }
@@ -161,8 +198,8 @@ namespace GunnarBabicz2263Pj8b
             return player;
         }
 
-
-        // if the player is hit
+        /* GAB 04/30/2023
+        * If the player is hit by an asteroid */
         private Ship playerHit(Ship player) 
         {
             player.canCollide = false;
@@ -176,32 +213,8 @@ namespace GunnarBabicz2263Pj8b
             return newPlayer;
         }
 
-
-
-        private void asteroidSplit(Asteroid ast)
-        {
-            int multiplier = 1;
-
-            for (int i = 0; i < 2; i++) 
-            {
-                int index = helpers.firstValid(para.spawnedAsteroids);
-                if (index >= 0)
-                { // if the spawn cap for asteroids has not been reached
-
-                    Asteroid asteroid = new Asteroid(para, ast.origin.X, ast.origin.Y, ast.radius - (para.scale - 10));
-
-                    asteroid.Angle = (ast.angle + (random.Next(5, 20) * multiplier));
-                    multiplier = -1;
-                    asteroid.speed = ast.speed + 2;
-
-                    para.addAsteroid(index, asteroid);
-                    Thread asteroidThread = new Thread(asteroid.simulateAsteroid);
-                    asteroidThread.Start();
-                }
-            }      
-        }
-
-
+        /* GAB 04/30/2023
+        * Advances the game to the next level */
         internal void nextLevel() 
         { // generates the asteroids for each level. Gets progressively harder.
             for (int i = 0; i < para.level + 5; i++) 
@@ -210,5 +223,15 @@ namespace GunnarBabicz2263Pj8b
             }
         }
 
+        /* GAB 04/30/2023
+        * Creates a speed for child asteroids based on angle of departure */
+        internal int getNewSpeed(int angleChange) 
+        {
+            angleChange = Math.Abs(angleChange);
+            if (angleChange > 120) { return -2; }
+            if (angleChange > 60) { return -1; }
+            if (angleChange > 30) { return 1; }
+            { return 2; }
+        }
     }
 }

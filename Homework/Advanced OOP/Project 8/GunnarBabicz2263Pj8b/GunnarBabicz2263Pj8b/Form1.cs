@@ -1,6 +1,10 @@
 using System.Drawing.Printing;
+using System.Media;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using System.Windows.Forms.Automation;
+using System.Xml;
 
 namespace GunnarBabicz2263Pj8b
 {
@@ -9,41 +13,15 @@ namespace GunnarBabicz2263Pj8b
     public partial class Form1 : Form
     {
         // instance variables
-
-        
-        
-        // if the game is being played
-
-
-        // the controls for the ship
+        Leaderboard highScores;
         bool left, right, forward, shoot;
-
-
-        // keeps the player from spamming lasers
+        SoundPlayer thrustSound = new SoundPlayer(@"..\..\..\sounds\thrust.wav");
         bool canFire = true;
         bool inPlay = false;
-
         Ship player;
-
-
         GameParameters parameters;
-        /* maybe give the objects an index? This could be used to
-         * specifically despawn them if a list is the decided upon choice
-         * to manage classes of entities. May just be able to despawn them
-         * through no longer taking action on them. Could be useful for acting on
-         * gamewide events (player dies) or there may be a simpler method that just halts
-         * all threads. 
-         * 
-         * 
-         * What would be the best way to implement a tick timer? Do we want this tick timer to 
-         * be the same as the frames per second? Could potentially change functions on entities
-         * to only run once instead of using a while loop
-         */
-
-
-
-        // Creates a Graphics object for the form
         public Graphics newGraphics() { return CreateGraphics(); }
+        string oldInput;
 
 
         /* GAB 04/07/2023
@@ -59,19 +37,22 @@ namespace GunnarBabicz2263Pj8b
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            lblSubtitle.Hide();
-            this.KeyPreview = true;
-
-            // need to define the parameters for each class that will use them
-
             deactivateButton(btnMainMenu);
             lblScore.Hide();
             lblLives.Hide();
             lblLevel.Hide();
+            txtNickname.Enabled= false;
+            txtNickname.Hide();
+            deactivateButton(btnNicknameEnter);
+            lblScoreboard.Hide();
+
+
 
             parameters = new GameParameters(this.Size.Width, this.Size.Height);
             parameters.loadForm(this);
             player = GameEvent.spawnShip(parameters);
+            pnlBorder.Width = parameters.Width;
+            pnlBorder.Location = new Point(0, 0);
         }
 
         /* GAB 04/07/2023
@@ -79,80 +60,69 @@ namespace GunnarBabicz2263Pj8b
         private void btnPlay_Click(object sender, MouseEventArgs e)
         {
             inPlay = true;
-
-
             // Loads the current game parameters into the event manager
             Event.gameStart(parameters);
             // hides the menu buttons
-            deactivateButton(btnPlay);
-            lblTitle.Hide();
-            // renders the player's ship
+            hideMainMenu();
             player.drawThing();
             player.canCollide = true;
-            // telling KeyPress the game is being played
-
             lblScore.Show();
             lblLives.Show();
             lblLevel.Show();
+            deactivateButton(btnNicknameEnter);
 
-            
         }
 
 
         /* GAB 04/07/2023
-         *  When a key is pressed while Asteroids is open
-         *
-         *  All that needs done is to change the method of input 
-         */
+         *  When a key is pressed while Asteroids is open */
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.A)
-            { // to rotate left
-                left = true;
-            }
-            if (e.KeyCode == Keys.D)
-            { // to rotate right
-                right = true;
-            }
-
-            if (e.KeyCode == Keys.W)
-            { // to move forward
-                forward = true;
-            }
-
-            if (e.KeyCode == Keys.Space)
-            { // to fire laser
-                shoot = true;
-            }
-        }
-
-        private void Form1_KeyUp(object sender, KeyEventArgs e)
-        {
+            if(player.canCollide)
             {
                 if (e.KeyCode == Keys.A)
                 { // to rotate left
-                    left = false;
+                    left = true;
                 }
-
                 if (e.KeyCode == Keys.D)
                 { // to rotate right
-                    right = false;
+                    right = true;
                 }
 
                 if (e.KeyCode == Keys.W)
                 { // to move forward
-                    forward = false;
+                    forward = true;
+                    thrustSound.Play();
                 }
 
                 if (e.KeyCode == Keys.Space)
                 { // to fire laser
-                    shoot = false;
+                    shoot = true;
                 }
+            }   
+        }
 
-                if (e.KeyCode == Keys.P)
-                { // pause menu
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.A)
+            { // to rotate left
+                left = false;
+            }
 
-                }
+            if (e.KeyCode == Keys.D)
+            { // to rotate right
+                right = false;
+            }
+
+            if (e.KeyCode == Keys.W)
+            { // to move forward
+                forward = false;
+                thrustSound.Stop();
+            }
+
+            if (e.KeyCode == Keys.Space)
+            { // to fire laser
+                shoot = false;
             }
         }
 
@@ -195,7 +165,7 @@ namespace GunnarBabicz2263Pj8b
 
 
                 // updating the score
-            lblScore.Text = ($"Score: {parameters.score}");
+            lblScore.Text = ($"{parameters.score}");
             lblLives.Text = ($"Lives:{parameters.lives}");
             lblLevel.Text = ($"Level: {parameters.level}");
 
@@ -239,15 +209,40 @@ namespace GunnarBabicz2263Pj8b
             foo.Enabled = false;
         }
 
+
+
         private void btnMainMenu_Click(object sender, EventArgs e)
         {
             parameters = new GameParameters(this.Size.Width, this.Size.Height);
             parameters.loadForm(this);
-            deactivateButton(btnMainMenu);
-            activateButton(btnPlay);
-            lblSubtitle.Hide();
-            lblTitle.Text = "Asteroids";
+            deactivateButton(btnNicknameEnter);
+            lblScoreboard.Hide();
+            txtNickname.Hide();
+            showMainMenu();
         }
+
+        private void txtNickname_TextChanged(object sender, EventArgs e)
+        {
+            string input = txtNickname.Text;
+            if (input.Length > 3)
+            {
+                input = input.Substring(0,3);
+            }
+
+            string output = "";
+
+            foreach (char c in input)
+            {
+                if (Char.IsLetter(c))
+                {
+                    output +=c;
+                }
+            }
+
+            txtNickname.Text = output;
+        }
+
+
 
 
         /*
@@ -263,17 +258,88 @@ namespace GunnarBabicz2263Pj8b
 
         private void gameOver() 
         {
+            parameters.level = 0;
             inPlay = false;
             lblLives.Hide();
             lblScore.Hide();
             lblLevel.Hide();
-            lblTitle.Text = "Game Over";
-            lblSubtitle.Text = $"Score: {parameters.score}";
-            lblSubtitle.Show();
             lblTitle.Show();
-            activateButton(btnMainMenu);
+            highScores = new Leaderboard();
+            if (highScores.highScore(parameters.score))
+            {
+                txtNickname.Enabled = true;
+                lblScoreboard.Text = "New High Score!\n\nEnter Nickname:";
+                lblScoreboard.Show();
+                lblScoreboard.SendToBack();
+                oldInput = "";
+                txtNickname.Show();
+                txtNickname.BringToFront();
+                btnNicknameEnter.BringToFront();
+                activateButton(btnNicknameEnter);
+            }
+            else 
+            {
+                lblTitle.Text = "Game Over";
+                lblTitle.Show();
+                activateButton(btnMainMenu);
+            }
         }
 
 
+
+        private void btnNicknameEnter_Click(object sender, EventArgs e)
+        {
+            if (txtNickname.Text.Length == 3)
+            {
+                lblWarning.SendToBack();
+                lblWarning.Hide();
+
+                highScores.recieve(txtNickname.Text);
+                lblScoreboard.Text = highScores.readScores();
+                deactivateButton(btnNicknameEnter);
+                txtNickname.Hide();
+                txtNickname.Enabled = false;
+                lblScoreboard.BringToFront();
+                activateButton(btnMainMenu);
+            }
+            else 
+            { 
+                lblWarning.BringToFront();
+                lblWarning.Text = "**Nickname needs to be 3 letters**";
+                lblWarning.Show();
+            }
+            
+        }
+
+
+
+        private void hideMainMenu() 
+        {
+            lblTitle.Hide();
+            deactivateButton(btnPlay);
+            deactivateButton(btnMainMenu);
+            deactivateButton(btnExit);
+            deactivateButton(btnNicknameEnter);
+            lblControls.Hide();
+            lblWarning.Hide();
+        }
+
+
+        private void showMainMenu() 
+        {
+            lblWarning.Text = "** WARNING: This game includes " +
+                "audio. Consider starting with low volume";
+            lblTitle.Text = "Asteroids";
+            lblTitle.Show();
+            activateButton(btnPlay);
+            activateButton(btnExit);
+            lblControls.Show();
+            lblWarning.Show();
+        }
+
+
+
     }
+
 }
+
