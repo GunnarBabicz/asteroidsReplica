@@ -45,7 +45,7 @@ namespace GunnarBabicz2263Pj8b
         public void spawnRandomAsteroid() 
         { // spawns a astroid with random values
 
-            int index = helpers.firstValid(para.spawnedAsteroids);
+            int index = Helpers.firstValid(para.spawnedAsteroids);
             if (index >= 0)
             { /* spawns an asteroid with random size, location, and speed if spawn cap
                * has not been reached */
@@ -75,7 +75,7 @@ namespace GunnarBabicz2263Pj8b
          *  Creates a new Laser object */
         public void fireLaser(Graphics g, Ship vessel)
         {
-            int i = helpers.firstValid(para.spawnedLasers);
+            int i = Helpers.firstValid(para.spawnedLasers);
             if (i >= 0) 
             { // if a laser is able to be spawned
                 Laser laser = new Laser(para,
@@ -104,15 +104,15 @@ namespace GunnarBabicz2263Pj8b
         {
             for (int i = 0; i < para.spawnedAsteroids.Length; i++)
             { // for each asteroid in the array
-                if (helpers.entityIsAlive(para.spawnedAsteroids[i]))
+                if (Helpers.entityIsAlive(para.spawnedAsteroids[i]))
                 { // if the asteroid should be checked
                     Asteroid astrd = para.spawnedAsteroids[i];
                     for (int j = 0; j < para.spawnedLasers.Length; j++)
                     { // for each laser in the array
-                        if (helpers.entityIsAlive(para.spawnedLasers[j]))
+                        if (Helpers.entityIsAlive(para.spawnedLasers[j]))
                         { // if the laser should be checked
                             Laser lsr = para.spawnedLasers[j];
-                            if (helpers.circlePointCollision(astrd, lsr))
+                            if (Helpers.circlePointCollision(astrd, lsr))
                             { // if the two collided
                                 para.score += determineScore(astrd);
                                 asteroidHitSound.Play();
@@ -136,7 +136,7 @@ namespace GunnarBabicz2263Pj8b
 
             for (int i = 0; i < 2; i++)
             {
-                int index = helpers.firstValid(para.spawnedAsteroids);
+                int index = Helpers.firstValid(para.spawnedAsteroids);
                 if (index >= 0)
                 { // if the spawn cap for asteroids has not been reached
 
@@ -186,9 +186,9 @@ namespace GunnarBabicz2263Pj8b
         {
             for (int i = 0; i < para.spawnedAsteroids.Length; i++)
             { // for each asteroid in the array
-                if (helpers.entityIsAlive(para.spawnedAsteroids[i])) 
+                if (Helpers.entityIsAlive(para.spawnedAsteroids[i])) 
                 { // if the asteroid should be checked
-                    if (helpers.checkShipCollision(player, para.spawnedAsteroids[i]))
+                    if (Helpers.checkShipCollision(player, para.spawnedAsteroids[i]))
                     {
                         shipKilled.Play();
                         return (playerHit(player));
@@ -208,7 +208,7 @@ namespace GunnarBabicz2263Pj8b
             Ship newPlayer = spawnShip(para);
 
             // keeps the player from spawning inside an asteroid
-            while (helpers.closestAsteroid(newPlayer, para) < (newPlayer.radius * 4)) { Thread.Sleep(20); }
+            while (Helpers.closestAsteroid(newPlayer, para) < (newPlayer.radius * 4)) { Thread.Sleep(20); }
             para.lives--;
             return newPlayer;
         }

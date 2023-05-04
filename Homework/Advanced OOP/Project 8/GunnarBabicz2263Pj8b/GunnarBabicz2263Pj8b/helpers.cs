@@ -10,7 +10,7 @@ namespace GunnarBabicz2263Pj8b
 {
     /* GAB 04/25/2023
      * Collection of misc functions that are used throughout the program */
-    internal class helpers
+    internal class Helpers
     {
         /* GAB 04/30/2023 
          * Finds the distance between two points */
@@ -108,7 +108,7 @@ namespace GunnarBabicz2263Pj8b
             {
                 Point ast = asteroid.origin;
                 Point shp = player.pointList[i];
-                if (asteroid.radius > helpers.distanceBetween(ast, shp)) { return true; }
+                if (asteroid.radius > Helpers.distanceBetween(ast, shp)) { return true; }
             }
             return false;
         }
@@ -120,7 +120,7 @@ namespace GunnarBabicz2263Pj8b
             int closestDistance = gp.Width;
             for (int i = 0; i < gp.spawnedAsteroids.Length; i++) 
             {
-                if (helpers.entityIsAlive(gp.spawnedAsteroids[i])) 
+                if (Helpers.entityIsAlive(gp.spawnedAsteroids[i])) 
                 {
                     int currentDistance = distanceBetween(gp.spawnedAsteroids[i].origin, player.origin);
                     if (currentDistance < closestDistance)

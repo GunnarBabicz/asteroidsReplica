@@ -86,11 +86,11 @@ namespace GunnarBabicz2263Pj8b
         * Creates the shape of the exhaust */
         private void exhaustLines(Pen penFoo) 
         {
-            Point leftExhaust = helpers.fractionOfDistanceFrom(leftRear, rightRear, 5);
-            Point rightExhaust = helpers.fractionOfDistanceFrom(rightRear, leftRear, 5);
-            Point exhaustTip = helpers.findMidpoint(left, right);
+            Point leftExhaust = Helpers.fractionOfDistanceFrom(leftRear, rightRear, 5);
+            Point rightExhaust = Helpers.fractionOfDistanceFrom(rightRear, leftRear, 5);
+            Point exhaustTip = Helpers.findMidpoint(left, right);
 
-            Point totalChange = helpers.coordinateChangesFrom(origin, exhaustTip);
+            Point totalChange = Helpers.coordinateChangesFrom(origin, exhaustTip);
             exhaustTip.X += totalChange.X; exhaustTip.Y += totalChange.Y;
 
 
@@ -116,15 +116,15 @@ namespace GunnarBabicz2263Pj8b
             //pointList[1]: left 
             //pointList[0]: right
 
-            left = helpers.fractionOfDistanceFrom(pointList[1], pointList[0], 5);
-            right = helpers.fractionOfDistanceFrom(pointList[0], pointList[1], 5);
+            left = Helpers.fractionOfDistanceFrom(pointList[1], pointList[0], 5);
+            right = Helpers.fractionOfDistanceFrom(pointList[0], pointList[1], 5);
 
             // draws the sides of the ship
             g.DrawLine(penFoo, left, pointList[2]);
             g.DrawLine(penFoo, right, pointList[2]);
 
-            leftRear = helpers.fractionOfDistanceFrom(left, pointList[2], 5);
-            rightRear = helpers.fractionOfDistanceFrom(right, pointList[2], 5);
+            leftRear = Helpers.fractionOfDistanceFrom(left, pointList[2], 5);
+            rightRear = Helpers.fractionOfDistanceFrom(right, pointList[2], 5);
 
             pointList[1] = left;
             pointList[0] = right;
@@ -160,7 +160,7 @@ namespace GunnarBabicz2263Pj8b
 
             // finds what the position of the ship would be with the added acceleration
             findPoints(1, acceleration);
-            int proposedSpeed = helpers.distanceBetween(old, pointList[0]);
+            int proposedSpeed = Helpers.distanceBetween(old, pointList[0]);
 
             
 
