@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "asteroidsReplica", "asteroidsReplica\asteroidsReplica.csproj", "{72623F9A-E5DC-4D39-889E-277BF5803C93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "asteroidsReplica", "asteroidsReplica.csproj", "{CCD4426F-0AB6-499E-B327-D4457ABA6866}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{72623F9A-E5DC-4D39-889E-277BF5803C93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72623F9A-E5DC-4D39-889E-277BF5803C93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72623F9A-E5DC-4D39-889E-277BF5803C93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72623F9A-E5DC-4D39-889E-277BF5803C93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCD4426F-0AB6-499E-B327-D4457ABA6866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCD4426F-0AB6-499E-B327-D4457ABA6866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCD4426F-0AB6-499E-B327-D4457ABA6866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCD4426F-0AB6-499E-B327-D4457ABA6866}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

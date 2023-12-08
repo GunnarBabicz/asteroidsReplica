@@ -5,7 +5,7 @@ using System.Security.Cryptography.Pkcs;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GunnarBabicz2263Pj8b
+namespace asteroids
 {
     /* GAB 04/30/2023
     * Creates an asteroid entity

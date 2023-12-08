@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GunnarBabicz2263Pj8b
+namespace asteroids
 {
     /* GAB 04/07/2023
      * Stores parameters that are used to 

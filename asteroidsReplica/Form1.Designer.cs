@@ -1,4 +1,4 @@
-﻿namespace GunnarBabicz2263Pj8b
+﻿namespace asteroids
 {
     partial class Form1
     {
@@ -73,6 +73,7 @@
             this.btnPlay.TabStop = false;
             this.btnPlay.Text = "Play";
             this.btnPlay.UseVisualStyleBackColor = false;
+            this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             this.btnPlay.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnPlay_Click);
             // 
             // lblControls

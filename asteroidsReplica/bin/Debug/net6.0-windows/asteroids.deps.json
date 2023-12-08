@@ -6,15 +6,15 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "GunnarBabicz2263Pj8b/1.0.0": {
+      "asteroids/1.0.0": {
         "runtime": {
-          "GunnarBabicz2263Pj8b.dll": {}
+          "asteroids.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "GunnarBabicz2263Pj8b/1.0.0": {
+    "asteroids/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

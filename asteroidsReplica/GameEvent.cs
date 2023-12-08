@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Media;
 
-namespace GunnarBabicz2263Pj8b
+namespace asteroids
 {
     /* GAB 04/05/2023
      * GameEvent is a class to handle cases such as spawning entities and checking for hits*/

@@ -1,6 +1,6 @@
 ﻿using System.Media;
 
-namespace GunnarBabicz2263Pj8b
+namespace asteroids
 {
     internal class Ship : Entity
     {

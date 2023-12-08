@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Automation;
 using System.Xml;
 
-namespace GunnarBabicz2263Pj8b
+namespace asteroids
 {
     /* GAB 04/07/2023
      *  Creates the GUI for Asteroids. */
@@ -21,7 +21,6 @@ namespace GunnarBabicz2263Pj8b
         Ship player;
         GameParameters parameters;
         public Graphics newGraphics() { return CreateGraphics(); }
-        string oldInput;
 
 // ---------- INITIALIZATION ----------
 
@@ -224,7 +223,6 @@ namespace GunnarBabicz2263Pj8b
                 lblScoreboard.Text = "New High Score!\n\nEnter Nickname:";
                 lblScoreboard.Show();
                 lblScoreboard.SendToBack();
-                oldInput = "";
                 txtNickname.Show();
                 txtNickname.BringToFront();
                 btnNicknameEnter.BringToFront();
@@ -254,6 +252,11 @@ namespace GunnarBabicz2263Pj8b
         {
             foo.Hide();
             foo.Enabled = false;
+        }
+
+        private void btnPlay_Click(object sender, EventArgs e)
+        {
+
         }
 
         /* GAB 04/06/2023

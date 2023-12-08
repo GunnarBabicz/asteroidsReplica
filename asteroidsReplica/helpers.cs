@@ -6,7 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GunnarBabicz2263Pj8b
+namespace asteroids
 {
     /* GAB 04/25/2023
      * Collection of misc functions that are used throughout the program */

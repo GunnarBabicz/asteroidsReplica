@@ -1,4 +1,4 @@
-namespace GunnarBabicz2263Pj8b
+namespace asteroids
 {
     internal static class Program
     {
